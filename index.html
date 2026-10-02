@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b2a6f">
+  <title>PreçoBit - Entrar</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="pagina-login">
+
+  <!-- Círculos decorativos do fundo -->
+  <div class="fundo-bolhas">
+    <div class="bolha bolha-1"></div>
+    <div class="bolha bolha-2"></div>
+  </div>
+
+  <main class="login-box">
+
+    <!-- Painel da esquerda -->
+    <section class="painel-esquerdo">
+      <div class="marca">
+        <span class="marca-icone"></span>
+        PREÇOBIT
+      </div>
+
+      <div class="painel-titulo">
+        <img class="placa-3d" src="img/placa-mae-3d.svg" alt="Ilustração 3D de uma placa-mãe">
+        <h1 id="titulo-painel">Bem-vindo</h1>
+        <span class="sublinhado"></span>
+      </div>
+
+      <span class="seta">&#8250;</span>
+    </section>
+
+    <!-- Painel da direita (formulário) -->
+    <section class="painel-direito">
+      <form id="form-login" novalidate>
+        <div id="campo-nome" class="campo-modo" hidden>
+          <label for="nome">NOME</label>
+          <input type="text" id="nome" placeholder="Como quer ser chamado" autocomplete="name">
+        </div>
+
+        <label for="email">E-MAIL</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail" autocomplete="email">
+
+        <div id="campo-senha" class="campo-modo">
+          <label for="senha">SENHA</label>
+          <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password">
+        </div>
+
+        <p id="link-esqueci" class="link-senha">Esqueceu a senha? <a href="#" data-modo="recuperar">clique aqui!</a></p>
+
+        <p id="mensagem-erro" class="erro" role="alert"></p>
+
+        <button type="submit" id="botao-enviar">ENTRAR</button>
+      </form>
+
+      <p id="troca-modo" class="dica"></p>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

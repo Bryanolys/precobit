@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b2a6f">
+  <title>PreçoBit - Nova senha</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="pagina-login">
+
+  <div class="fundo-bolhas">
+    <div class="bolha bolha-1"></div>
+    <div class="bolha bolha-2"></div>
+  </div>
+
+  <main class="login-box">
+
+    <section class="painel-esquerdo">
+      <div class="marca">
+        <span class="marca-icone"></span>
+        PREÇOBIT
+      </div>
+
+      <div class="painel-titulo">
+        <img class="placa-3d" src="../img/placa-mae-3d.svg" alt="Ilustração 3D de uma placa-mãe">
+        <h1>Nova senha</h1>
+        <span class="sublinhado"></span>
+      </div>
+
+      <span class="seta">&#8250;</span>
+    </section>
+
+    <section class="painel-direito">
+      <form id="form-nova-senha" novalidate>
+        <label for="senha">NOVA SENHA</label>
+        <input type="password" id="senha" placeholder="Mínimo de 6 caracteres" autocomplete="new-password">
+
+        <label for="confirmar">CONFIRMAR SENHA</label>
+        <input type="password" id="confirmar" placeholder="Digite de novo" autocomplete="new-password">
+
+        <p id="mensagem" class="erro" role="alert"></p>
+
+        <button type="submit" id="botao-salvar">SALVAR SENHA</button>
+      </form>
+
+      <p class="dica"><a href="../index.html">Voltar para o login</a></p>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script>
+    // O link do e-mail traz um código; o Supabase usa ele para abrir uma sessão temporária
+    const form = document.getElementById("form-nova-senha");
+    const mensagem = document.getElementById("mensagem");
+    const botao = document.getElementById("botao-salvar");
+
+    function mostrar(texto, sucesso) {
+      mensagem.textContent = texto;
+      mensagem.className = sucesso ? "erro sucesso" : "erro";
+    }
+
+    if (!SUPABASE_CONFIGURADO) mostrar("Configure o Supabase em js/supabase-config.js.");
+
+    form.addEventListener("submit", async function (evento) {
+      evento.preventDefault();
+      const senha = document.getElementById("senha").value;
+      const confirmar = document.getElementById("confirmar").value;
+
+      if (senha.length < 6) return mostrar("A senha precisa ter pelo menos 6 caracteres.");
+      if (senha !== confirmar) return mostrar("As senhas não são iguais.");
+
+      const { data } = await supabaseClient.auth.getSession();
+      if (!data.session) return mostrar("Link inválido ou expirado. Peça um novo na tela de login.");
+
+      botao.disabled = true;
+      const { error } = await supabaseClient.auth.updateUser({ password: senha });
+      botao.disabled = false;
+
+      if (error) return mostrar(error.message);
+
+      mostrar("Senha alterada! Indo para a página inicial...", true);
+      setTimeout(() => (window.location.href = "home.html"), 1500);
+    });
+  </script>
+</body>
+</html>

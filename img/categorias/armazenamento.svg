@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0b2a6f"/><stop offset="1" stop-color="#1565d8"/></linearGradient></defs>
+  <rect x="22" y="50" width="156" height="40" rx="4" fill="url(#g)"/>
+  <rect x="22" y="56" width="12" height="28" fill="#e0b84a"/>
+  <rect x="48" y="58" width="36" height="24" rx="2" fill="#0a1f52" stroke="#2aa8f2" stroke-width="2"/>
+  <rect x="94" y="58" width="36" height="24" rx="2" fill="#0a1f52" stroke="#2aa8f2" stroke-width="2"/>
+  <rect x="140" y="62" width="22" height="16" rx="2" fill="#0a1f52"/>
+  <circle cx="172" cy="70" r="4" fill="#9cc3f2"/>
+  <text x="66" y="74" font-family="Segoe UI, Arial" font-size="9" font-weight="700" fill="#7fd8ff" text-anchor="middle">NVMe</text>
+</svg>

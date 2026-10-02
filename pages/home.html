@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b2a6f">
+  <title>PreçoBit - Hardware pelo menor preço</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="pagina-home">
+
+  <!-- Manchas de cor no fundo (é o que aparece "através do vidro") -->
+  <div class="fundo-cores">
+    <span></span><span></span><span></span>
+  </div>
+
+  <header class="topo vidro">
+    <div class="topo-esquerda">
+      <button id="botao-menu" class="botao-menu" aria-label="Abrir menu" aria-controls="menu-lateral" aria-expanded="false">
+        <span></span><span></span><span></span>
+        <em id="contador-filtros" class="contador-filtros" hidden></em>
+      </button>
+      <div class="marca">
+        <span class="marca-icone"></span>
+        PREÇOBIT
+      </div>
+    </div>
+    <div class="topo-direita">
+      <span class="ola">Olá, <strong id="nome-usuario"></strong></span>
+      <button id="botao-sair" class="botao-sair">Sair</button>
+    </div>
+  </header>
+
+  <!-- Menu lateral (abre pelo botão no canto superior esquerdo) -->
+  <div id="fundo-menu" class="fundo-menu" hidden></div>
+
+  <aside id="menu-lateral" class="menu-lateral" aria-hidden="true">
+    <div class="menu-cabecalho">
+      <span>Menu</span>
+      <button id="fechar-menu" class="fechar-menu" aria-label="Fechar menu">✕</button>
+    </div>
+
+    <!-- Cadastro -->
+    <details class="menu-secao" open>
+      <summary>👤 Meu cadastro</summary>
+
+      <div class="perfil">
+        <span id="avatar" class="avatar"></span>
+        <div>
+          <strong id="perfil-usuario"></strong>
+          <p id="perfil-email" class="perfil-email">Complete seu cadastro</p>
+        </div>
+      </div>
+
+      <form id="form-cadastro" class="form-menu">
+        <label for="cad-nome">Nome completo</label>
+        <input type="text" id="cad-nome" placeholder="Seu nome">
+
+        <label for="cad-email">E-mail</label>
+        <input type="email" id="cad-email" readonly title="O e-mail é o da sua conta">
+
+        <label for="cad-telefone">Telefone</label>
+        <input type="tel" id="cad-telefone" placeholder="(11) 99999-9999">
+
+        <label for="cad-cidade">Cidade / UF</label>
+        <input type="text" id="cad-cidade" placeholder="São Paulo / SP">
+
+        <label class="caixa">
+          <input type="checkbox" id="cad-alertas">
+          Quero receber alertas de queda de preço
+        </label>
+
+        <button type="submit" class="botao-menu-acao">Salvar cadastro</button>
+        <p id="cadastro-mensagem" class="menu-mensagem"></p>
+      </form>
+    </details>
+
+    <!-- Filtros -->
+    <details class="menu-secao">
+      <summary>🎚️ Filtros</summary>
+
+      <div class="form-menu">
+        <span class="rotulo-menu">Faixa de preço (R$)</span>
+        <div class="faixa-preco">
+          <input type="number" id="filtro-min" min="0" step="50" placeholder="Mínimo">
+          <span>até</span>
+          <input type="number" id="filtro-max" min="0" step="50" placeholder="Máximo">
+        </div>
+
+        <span class="rotulo-menu">Lojas</span>
+        <label class="caixa"><input type="checkbox" class="filtro-loja" value="KaBuM!" checked> KaBuM!</label>
+        <label class="caixa"><input type="checkbox" class="filtro-loja" value="Amazon" checked> Amazon</label>
+
+        <span class="rotulo-menu">Mostrar só</span>
+        <label class="caixa"><input type="checkbox" id="filtro-desconto"> Produtos com desconto</label>
+        <label class="caixa"><input type="checkbox" id="filtro-varias-lojas"> Produtos em mais de uma loja</label>
+        <label class="caixa" id="opcao-favoritos" hidden><input type="checkbox" id="filtro-favoritos"> Só meus favoritos ♥</label>
+
+        <button type="button" id="limpar-filtros" class="botao-menu-secundario">Limpar filtros</button>
+      </div>
+    </details>
+
+    <!-- Outros -->
+    <details class="menu-secao">
+      <summary>☰ Outros</summary>
+
+      <div class="form-menu">
+        <span class="rotulo-menu">Lojas</span>
+        <ul class="menu-links">
+          <li><a href="https://www.kabum.com.br" target="_blank" rel="noopener">KaBuM! ↗</a></li>
+          <li><a href="https://www.amazon.com.br" target="_blank" rel="noopener">Amazon ↗</a></li>
+          <li><a href="https://www.pichau.com.br" target="_blank" rel="noopener">Pichau ↗</a></li>
+          <li><a href="https://www.terabyteshop.com.br" target="_blank" rel="noopener">Terabyte ↗</a></li>
+          <li><a href="https://www.mercadolivre.com.br" target="_blank" rel="noopener">Mercado Livre ↗</a></li>
+        </ul>
+
+        <span class="rotulo-menu">Como funciona</span>
+        <p class="menu-texto">
+          Os preços são coletados da KaBuM (valor no PIX) e da Amazon. A última atualização foi em
+          <strong id="menu-atualizado-em"></strong>. Confira sempre o preço na loja antes de comprar.
+        </p>
+
+        <span class="rotulo-menu">Sobre</span>
+        <p class="menu-texto">PreçoBit: comparador de preços de hardware feito como projeto de estudo.</p>
+
+        <button type="button" id="menu-sair" class="botao-menu-secundario">Sair da conta</button>
+      </div>
+    </details>
+  </aside>
+
+  <!-- Destaque com a busca -->
+  <section class="hero">
+    <h1>Encontre o <span>menor preço</span> em hardware</h1>
+    <p>Compare ofertas reais da KaBuM e da Amazon em segundos.</p>
+
+    <form id="form-busca" class="busca">
+      <input type="search" id="campo-busca" placeholder="Busque por RTX 5060, Ryzen 7, SSD 1TB...">
+      <button type="submit">Buscar</button>
+    </form>
+  </section>
+
+  <main class="conteudo">
+
+    <!-- Filtros -->
+    <div class="barra-filtros vidro">
+      <div id="categorias" class="categorias"></div>
+
+      <label class="ordenar">
+        Ordenar por
+        <select id="ordenacao">
+          <option value="menor">Menor preço</option>
+          <option value="populares">Mais vendidos</option>
+          <option value="maior">Maior preço</option>
+          <option value="economia">Maior economia</option>
+          <option value="nome">Nome (A-Z)</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="info-lista">
+      <p id="contador" class="contador"></p>
+      <p class="contador">Preços atualizados em <strong id="atualizado-em"></strong></p>
+    </div>
+
+    <!-- Lista de produtos (preenchida pelo JavaScript) -->
+    <section id="lista-produtos" class="lista-produtos"></section>
+
+    <p class="aviso">* Preços coletados da KaBuM (valor no PIX) e da Amazon na data acima. Eles mudam com frequência: confira sempre na loja antes de comprar.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/produtos.js"></script>
+  <script src="../js/home.js"></script>
+</body>
+</html>

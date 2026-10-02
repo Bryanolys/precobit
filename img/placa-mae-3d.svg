@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-185 -45 370 250" role="img" aria-label="Placa-mãe em 3D">
+  <defs>
+    <linearGradient id="gPlaca" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e3a99"/>
+      <stop offset="1" stop-color="#0b2a6f"/>
+    </linearGradient>
+    <linearGradient id="gCpu" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#9cc3f2"/>
+    </linearGradient>
+    <radialGradient id="gBrilho">
+      <stop offset="0" stop-color="#7fd8ff" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#7fd8ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="sombra" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+  <ellipse cx="0" cy="118.0" rx="150" ry="22" fill="#031238" opacity=".35" filter="url(#sombra)"/>
+  <polygon points="-173.2,100.0 0.0,200.0 0.0,195.0 -173.2,95.0" fill="#0a2160"/><polygon points="173.2,100.0 0.0,200.0 0.0,195.0 173.2,95.0" fill="#071a4d"/><polygon points="0.0,-5.0 173.2,95.0 0.0,195.0 -173.2,95.0" fill="url(#gPlaca)"/>
+  <polyline points="-82.3,62.5 -52.0,80.0 -34.6,80.0" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="-88.3,66.0 -53.7,86.0 -32.9,86.0" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="47.6,92.5 56.3,97.5 99.6,72.5 147.2,100.0" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="39.0,97.5 45.0,101.0 3.5,125.0 53.7,154.0" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="-4.3,97.5 -21.7,107.5" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="4.3,102.5 -6.9,109.0 27.7,129.0 12.1,138.0" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="-142.9,97.5 -39.0,157.5 -25.1,157.5" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="39.0,157.5 45.0,161.0 1.7,186.0 -26.0,170.0" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/><polyline points="13.0,17.5 73.6,52.5 71.9,61.5" fill="none" stroke="#2aa8f2" stroke-width="1.2" stroke-linejoin="round" opacity=".55"/>
+  <ellipse cx="-34.6" cy="80.0" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="-32.9" cy="86.0" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="147.2" cy="100.0" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="53.7" cy="154.0" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="-21.7" cy="107.5" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="12.1" cy="138.0" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="-25.1" cy="157.5" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="-26.0" cy="170.0" rx="2.2" ry="1.3" fill="#7fd8ff"/><ellipse cx="71.9" cy="61.5" rx="2.2" ry="1.3" fill="#7fd8ff"/>
+  <polygon points="-83.1,47.0 -69.3,55.0 -69.3,33.0 -83.1,25.0" fill="#0c2c70"/><polygon points="10.4,9.0 -69.3,55.0 -69.3,33.0 10.4,-13.0" fill="#08215a"/><polygon points="-3.5,-21.0 10.4,-13.0 -69.3,33.0 -83.1,25.0" fill="#123b8f" />
+  <polygon points="-65.8,59.0 -53.7,66.0 -53.7,50.0 -65.8,43.0" fill="#1565d8"/><polygon points="26.0,20.0 -53.7,66.0 -53.7,50.0 26.0,4.0" fill="#0d47a1"/><polygon points="13.9,-3.0 26.0,4.0 -53.7,50.0 -65.8,43.0" fill="#1e88e5" />
+  <polygon points="19.1,30.0 84.9,68.0 84.9,52.0 19.1,14.0" fill="#1565d8"/><polygon points="97.0,61.0 84.9,68.0 84.9,52.0 97.0,45.0" fill="#0d47a1"/><polygon points="31.2,7.0 97.0,45.0 84.9,52.0 19.1,14.0" fill="#1e88e5" />
+  <polygon points="-36.4,72.0 17.3,103.0 17.3,99.0 -36.4,68.0" fill="#0c2c70"/><polygon points="71.0,72.0 17.3,103.0 17.3,99.0 71.0,68.0" fill="#08215a"/><polygon points="17.3,37.0 71.0,68.0 17.3,99.0 -36.4,68.0" fill="#123b8f" />
+  <polygon points="-22.5,72.0 17.3,95.0 17.3,86.0 -22.5,63.0" fill="#a9c1e0"/><polygon points="57.2,72.0 17.3,95.0 17.3,86.0 57.2,63.0" fill="#8aa6cc"/><polygon points="17.3,40.0 57.2,63.0 17.3,86.0 -22.5,63.0" fill="#dbe8f7" />
+  <polygon points="-22.5,59.0 17.3,82.0 17.3,81.9 -22.5,58.9" fill="#a9c1e0"/><polygon points="57.2,59.0 17.3,82.0 17.3,81.9 57.2,58.9" fill="#8aa6cc"/><polygon points="17.3,35.9 57.2,58.9 17.3,81.9 -22.5,58.9" fill="url(#gCpu)" />
+  <polygon points="15.6,122.0 19.9,124.5 19.9,118.5 15.6,116.0" fill="#6f9fe0"/><polygon points="103.1,76.5 19.9,124.5 19.9,118.5 103.1,70.5" fill="#5487cf"/><polygon points="98.7,68.0 103.1,70.5 19.9,118.5 15.6,116.0" fill="#9cc3f2" />
+  <polygon points="29.9,126.2 33.3,128.2 33.3,102.2 29.9,100.2" fill="#2aa8f2"/><polygon points="109.6,84.2 33.3,128.2 33.3,102.2 109.6,58.2" fill="#1e88e5"/><polygon points="106.1,56.2 109.6,58.2 33.3,102.2 29.9,100.2" fill="#7fd8ff" />
+  <polygon points="26.0,128.0 30.3,130.5 30.3,124.5 26.0,122.0" fill="#6f9fe0"/><polygon points="113.4,82.5 30.3,130.5 30.3,124.5 113.4,76.5" fill="#5487cf"/><polygon points="109.1,74.0 113.4,76.5 30.3,124.5 26.0,122.0" fill="#9cc3f2" />
+  <polygon points="-99.6,76.5 2.6,135.5 2.6,128.5 -99.6,69.5" fill="#6f9fe0"/><polygon points="8.7,132.0 2.6,135.5 2.6,128.5 8.7,125.0" fill="#5487cf"/><polygon points="-93.5,66.0 8.7,125.0 2.6,128.5 -99.6,69.5" fill="#9cc3f2" />
+  <polygon points="36.4,134.0 40.7,136.5 40.7,130.5 36.4,128.0" fill="#6f9fe0"/><polygon points="123.8,88.5 40.7,136.5 40.7,130.5 123.8,82.5" fill="#5487cf"/><polygon points="119.5,80.0 123.8,82.5 40.7,130.5 36.4,128.0" fill="#9cc3f2" />
+  <polygon points="-111.7,89.5 -28.6,137.5 -28.6,133.5 -111.7,85.5" fill="#1565d8"/><polygon points="-17.3,131.0 -28.6,137.5 -28.6,133.5 -17.3,127.0" fill="#0d47a1"/><polygon points="-100.5,79.0 -17.3,127.0 -28.6,133.5 -111.7,85.5" fill="#1e88e5" />
+  <polygon points="50.7,138.2 54.1,140.2 54.1,114.2 50.7,112.2" fill="#2aa8f2"/><polygon points="130.3,96.2 54.1,140.2 54.1,114.2 130.3,70.2" fill="#1e88e5"/><polygon points="126.9,68.2 130.3,70.2 54.1,114.2 50.7,112.2" fill="#7fd8ff" />
+  <polygon points="46.8,140.0 51.1,142.5 51.1,136.5 46.8,134.0" fill="#6f9fe0"/><polygon points="134.2,94.5 51.1,142.5 51.1,136.5 134.2,88.5" fill="#5487cf"/><polygon points="129.9,86.0 134.2,88.5 51.1,136.5 46.8,134.0" fill="#9cc3f2" />
+  <polygon points="-129.0,93.5 -26.8,152.5 -26.8,145.5 -129.0,86.5" fill="#6f9fe0"/><polygon points="-20.8,149.0 -26.8,152.5 -26.8,145.5 -20.8,142.0" fill="#5487cf"/><polygon points="-123.0,83.0 -20.8,142.0 -26.8,145.5 -129.0,86.5" fill="#9cc3f2" />
+  <polygon points="-22.5,160.0 6.9,177.0 6.9,168.0 -22.5,151.0" fill="#29a3e0"/><polygon points="36.4,160.0 6.9,177.0 6.9,168.0 36.4,151.0" fill="#1f86c4"/><polygon points="6.9,134.0 36.4,151.0 6.9,168.0 -22.5,151.0" fill="#4fc3f7" />
+  <polygon points="-30.3,172.5 -19.9,178.5 -19.9,175.5 -30.3,169.5" fill="#a9c1e0"/><polygon points="-12.1,174.0 -19.9,178.5 -19.9,175.5 -12.1,171.0" fill="#8aa6cc"/><polygon points="-22.5,165.0 -12.1,171.0 -19.9,175.5 -30.3,169.5" fill="#dbe8f7" />
+  <ellipse cx="6.9" cy="151.0" rx="26" ry="15" fill="url(#gBrilho)"/>
+  <text x="0" y="0" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#1565d8" text-anchor="middle" dominant-baseline="middle" transform="matrix(0.866 0.5 -0.866 0.5 17.3 58.8)">CPU</text>
+</svg>

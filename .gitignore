@@ -1,0 +1,5 @@
+# Chaves secretas do Supabase
+.env
+node_modules/
+publicar/
+.netlify/

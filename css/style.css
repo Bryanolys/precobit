@@ -1,0 +1,1466 @@
+/* ===== Estilos gerais ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+}
+
+/* Garante que elementos com o atributo hidden fiquem escondidos mesmo com display: flex */
+[hidden] {
+  display: none !important;
+}
+
+/* ===== Tela de login ===== */
+.pagina-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #0b2a6f, #1565d8 55%, #2aa8f2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Grade sutil para dar um ar tecnológico */
+.pagina-login::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Círculos decorativos (dentro de uma camada fixa que corta o que passa da tela,
+   para não criar rolagem para os lados no celular) */
+.fundo-bolhas {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bolha {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+
+.bolha-1 {
+  width: 420px;
+  height: 420px;
+  left: -120px;
+  bottom: -160px;
+}
+
+.bolha-2 {
+  width: 200px;
+  height: 200px;
+  right: -40px;
+  top: -60px;
+}
+
+/* Caixa principal */
+.login-box {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  max-width: 620px;
+  min-height: 340px;
+  box-shadow: 0 20px 50px rgba(3, 18, 56, 0.5);
+}
+
+/* Painel esquerdo */
+.painel-esquerdo {
+  position: relative;
+  flex: 0 0 38%;
+  padding: 16px 20px;
+  color: white;
+  background: linear-gradient(180deg, #0d3a94, #1e88e5);
+  display: flex;
+  flex-direction: column;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.marca-icone {
+  width: 18px;
+  height: 12px;
+  border-radius: 6px;
+  background: #4fc3f7;
+  position: relative;
+}
+
+.marca-icone::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+}
+
+.painel-titulo {
+  margin: auto 0;
+}
+
+/* Placa-mãe 3D acima do "Bem-vindo", flutuando devagar */
+.placa-3d {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 0 14px -6px;
+  filter: drop-shadow(0 10px 18px rgba(3, 18, 56, 0.45)) drop-shadow(0 0 14px rgba(127, 216, 255, 0.25));
+  animation: flutuar 4s ease-in-out infinite;
+}
+
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .placa-3d {
+    animation: none;
+  }
+}
+
+.painel-titulo h1 {
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.sublinhado {
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 6px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Botão circular com seta que "sai" do painel */
+.seta {
+  position: absolute;
+  top: 50%;
+  right: -22px;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e88e5, #4fc3f7);
+  color: white;
+  font-size: 28px;
+  line-height: 40px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(13, 58, 148, 0.45);
+  z-index: 2;
+}
+
+/* Painel direito */
+.painel-direito {
+  flex: 1;
+  background: #e9edf3;
+  padding: 48px 56px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.painel-direito label {
+  display: block;
+  font-size: 12px;
+  color: #1565d8;
+  margin-bottom: 4px;
+}
+
+.painel-direito input {
+  width: 100%;
+  padding: 6px 6px;
+  margin-bottom: 22px;
+  border: none;
+  border-bottom: 1px solid #90b8ec;
+  background: transparent;
+  font-size: 13px;
+  color: #0b2a6f;
+}
+
+.painel-direito input::placeholder {
+  color: #8fb0dc;
+}
+
+.painel-direito input:focus {
+  outline: none;
+  border-bottom-color: #1565d8;
+}
+
+.link-senha {
+  font-size: 11px;
+  color: #1565d8;
+  margin-top: -12px;
+}
+
+.link-senha a {
+  color: #1565d8;
+}
+
+.painel-direito button {
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #1565d8, #2aa8f2);
+  color: white;
+  font-size: 13px;
+  border-radius: 0;
+  align-self: flex-start;
+  transition: filter 0.2s, box-shadow 0.2s;
+}
+
+.painel-direito button:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 12px rgba(42, 168, 242, 0.6);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+#form-login {
+  display: flex;
+  flex-direction: column;
+}
+
+.erro {
+  color: #d93025;
+  font-size: 12px;
+  min-height: 16px;
+  margin: 8px 0;
+}
+
+.dica {
+  margin-top: 20px;
+  font-size: 11px;
+  color: #7a8aa3;
+}
+
+/* Celular: empilha os painéis */
+@media (max-width: 560px) {
+  .login-box {
+    flex-direction: column;
+  }
+
+  .painel-esquerdo {
+    flex: none;
+    min-height: 140px;
+  }
+
+  .seta {
+    top: auto;
+    bottom: -22px;
+    right: 50%;
+    transform: translateX(50%) rotate(90deg);
+  }
+
+  .painel-direito {
+    padding: 40px 24px 24px;
+  }
+}
+
+/* ===== Tela home (buscador de preços) ===== */
+.pagina-home {
+  min-height: 100vh;
+  background: #edf2fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+  color: #1c2b45;
+}
+
+/* Manchas de cor desfocadas no fundo: são elas que aparecem "através" do vidro */
+.fundo-cores {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fundo-cores span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.fundo-cores span:nth-child(1) {
+  width: 520px;
+  height: 520px;
+  background: #4fa3ff;
+  top: 30%;
+  left: -160px;
+}
+
+.fundo-cores span:nth-child(2) {
+  width: 460px;
+  height: 460px;
+  background: #7fd8ff;
+  top: 55%;
+  right: -120px;
+}
+
+.fundo-cores span:nth-child(3) {
+  width: 380px;
+  height: 380px;
+  background: #6c7dff;
+  bottom: -140px;
+  left: 35%;
+}
+
+.hero,
+.conteudo {
+  position: relative;
+  z-index: 1;
+}
+
+/* Efeito vidro (glassmorphism), no estilo da Apple */
+.vidro {
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Topo: barra de vidro escura que fica presa no alto da tela */
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 24px;
+  color: white;
+}
+
+.topo.vidro {
+  background: rgba(11, 42, 111, 0.6);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.topo .marca {
+  font-size: 15px;
+}
+
+.topo-direita {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+}
+
+.botao-sair {
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+}
+
+.botao-sair:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Destaque com a busca */
+.hero {
+  margin-top: -56px; /* passa por baixo do topo de vidro */
+  padding: 110px 16px 72px;
+  overflow: hidden;
+  text-align: center;
+  color: white;
+  background: linear-gradient(135deg, #0b2a6f, #1565d8 55%, #2aa8f2);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.hero h1 {
+  position: relative;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.hero h1 span {
+  color: #7fd8ff;
+}
+
+.hero p {
+  position: relative;
+  margin-top: 8px;
+  opacity: 0.85;
+}
+
+/* Barra de busca de vidro sobre o azul */
+.busca {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  max-width: 620px;
+  margin: 28px auto 0;
+  padding: 6px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 30px rgba(3, 18, 56, 0.3);
+}
+
+.busca input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+}
+
+.busca input:focus {
+  outline: 2px solid #7fd8ff;
+}
+
+.busca button {
+  padding: 0 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e88e5, #2aa8f2);
+  color: white;
+  font-weight: 600;
+}
+
+.busca button:hover {
+  filter: brightness(1.1);
+}
+
+/* Conteúdo */
+.conteudo {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* Barra de filtros de vidro, presa logo abaixo do topo ao rolar */
+.barra-filtros {
+  position: sticky;
+  top: 66px;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(21, 101, 216, 0.1);
+}
+
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(21, 101, 216, 0.15);
+  background: rgba(255, 255, 255, 0.5);
+  color: #1565d8;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.chip.ativo {
+  background: #1565d8;
+  border-color: #1565d8;
+  color: white;
+}
+
+.ordenar {
+  font-size: 13px;
+  color: #5a6b85;
+}
+
+.ordenar select {
+  margin-left: 6px;
+  padding: 7px 10px;
+  border: 1px solid rgba(21, 101, 216, 0.15);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+}
+
+.info-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin: 18px 4px 12px;
+}
+
+.contador {
+  font-size: 13px;
+  color: #5a6b85;
+}
+
+/* Cards de produto (vidro) */
+.lista-produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.produto {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 24px rgba(21, 101, 216, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Efeitos de "passar o mouse" só em quem tem mouse (no celular ficariam presos no toque) */
+@media (hover: hover) {
+  .produto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(21, 101, 216, 0.18);
+  }
+
+  .produto:hover .produto-imagem img {
+    transform: scale(1.06);
+  }
+}
+
+.produto-imagem {
+  position: relative;
+  height: 170px;
+  border-radius: 14px;
+  background: white; /* as fotos das lojas têm fundo branco */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.produto-imagem img {
+  max-width: 85%;
+  max-height: 150px;
+  object-fit: contain;
+  transition: transform 0.25s;
+}
+
+
+.produto-categoria {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  background: rgba(230, 240, 253, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #1565d8;
+}
+
+.produto h2 {
+  margin: 14px 4px 12px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  flex: 1;
+}
+
+.rotulo-preco,
+.preco,
+.na-loja {
+  margin: 0 4px;
+}
+
+.rotulo-preco {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #5a6b85;
+}
+
+.preco {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1565d8;
+}
+
+.na-loja {
+  font-size: 13px;
+  color: #5a6b85;
+}
+
+.selo {
+  align-self: flex-start;
+  margin: 10px 4px 0;
+  padding: 3px 9px;
+  border-radius: 8px;
+  background: rgba(26, 127, 69, 0.1);
+  color: #1a7f45;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.botao-oferta {
+  display: block;
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1565d8, #2aa8f2);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: filter 0.2s, box-shadow 0.2s;
+}
+
+.botao-oferta:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 16px rgba(42, 168, 242, 0.45);
+}
+
+.produto details {
+  margin-top: 12px;
+  padding: 10px 4px 0;
+  border-top: 1px solid rgba(21, 101, 216, 0.12);
+}
+
+.produto summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: #1565d8;
+}
+
+.produto ul {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.oferta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 9px;
+  font-size: 13px;
+  border-radius: 8px;
+  color: #1c2b45;
+  text-decoration: none;
+}
+
+.oferta:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.oferta.melhor {
+  background: rgba(21, 101, 216, 0.1);
+  color: #0b2a6f;
+  font-weight: 600;
+}
+
+.oferta-preco s {
+  margin-right: 6px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #8a98ae;
+}
+
+.outras-lojas {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #5a6b85;
+}
+
+.outras-lojas a {
+  color: #1565d8;
+}
+
+.vazio {
+  grid-column: 1 / -1;
+  padding: 40px;
+  text-align: center;
+  color: #5a6b85;
+}
+
+.aviso {
+  margin-top: 28px;
+  font-size: 12px;
+  color: #6b7a92;
+}
+
+@media (max-width: 560px) {
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .ola {
+    display: none;
+  }
+
+  .barra-filtros {
+    position: static;
+  }
+}
+
+/* ===== Menu lateral ===== */
+.topo-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Botão "hambúrguer" (três tracinhos) */
+.botao-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  padding: 0 9px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.botao-menu:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.botao-menu span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: white;
+}
+
+/* Bolinha com o número de filtros ligados */
+.contador-filtros {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #2aa8f2;
+  color: white;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.contador-filtros[hidden] {
+  display: none;
+}
+
+/* Fundo escurecido atrás do menu */
+.fundo-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(3, 18, 56, 0.25);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.fundo-menu[hidden] {
+  display: none;
+}
+
+/* Painel que desliza da esquerda (vidro) */
+.menu-lateral {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 30;
+  width: 340px;
+  max-width: 88vw;
+  padding: 16px 16px 24px;
+  overflow-y: auto;
+  background: rgba(240, 245, 253, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 12px 0 40px rgba(3, 18, 56, 0.2);
+  transform: translateX(-105%);
+  visibility: hidden;
+  transition: transform 0.3s ease, visibility 0.3s;
+}
+
+.menu-lateral.aberto {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.menu-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0b2a6f;
+}
+
+.fechar-menu {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(21, 101, 216, 0.08);
+  color: #0b2a6f;
+  font-size: 14px;
+}
+
+.fechar-menu:hover {
+  background: rgba(21, 101, 216, 0.16);
+}
+
+/* Cada seção do menu é um "card" de vidro que abre e fecha */
+.menu-secao {
+  margin-bottom: 10px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.menu-secao summary {
+  padding: 13px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #0b2a6f;
+  list-style: none;
+}
+
+.menu-secao summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu-secao summary::after {
+  content: "›";
+  float: right;
+  font-size: 18px;
+  line-height: 1;
+  color: #1565d8;
+  transition: transform 0.2s;
+}
+
+.menu-secao[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px 12px;
+}
+
+.avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1565d8, #2aa8f2);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 44px;
+  text-align: center;
+}
+
+.perfil-email {
+  font-size: 12px;
+  color: #5a6b85;
+}
+
+.form-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+}
+
+.form-menu label:not(.caixa),
+.rotulo-menu {
+  margin: 10px 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #5a6b85;
+}
+
+.form-menu input[type="text"],
+.form-menu input[type="email"],
+.form-menu input[type="tel"],
+.form-menu input[type="number"] {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid rgba(21, 101, 216, 0.15);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.form-menu input:focus {
+  outline: 2px solid rgba(42, 168, 242, 0.5);
+  border-color: transparent;
+}
+
+.caixa {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #1c2b45;
+  cursor: pointer;
+}
+
+.caixa input {
+  width: 16px;
+  height: 16px;
+  accent-color: #1565d8;
+}
+
+.faixa-preco {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #5a6b85;
+}
+
+.botao-menu-acao,
+.botao-menu-secundario {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.botao-menu-acao {
+  background: linear-gradient(135deg, #1565d8, #2aa8f2);
+  color: white;
+}
+
+.botao-menu-acao:hover {
+  filter: brightness(1.08);
+}
+
+.botao-menu-secundario {
+  background: rgba(21, 101, 216, 0.08);
+  color: #1565d8;
+}
+
+.botao-menu-secundario:hover {
+  background: rgba(21, 101, 216, 0.15);
+}
+
+.menu-mensagem {
+  min-height: 16px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.menu-mensagem.sucesso {
+  color: #1a7f45;
+}
+
+.menu-mensagem.erro {
+  color: #d93025;
+}
+
+.menu-links {
+  list-style: none;
+}
+
+.menu-links a {
+  display: block;
+  padding: 7px 4px;
+  font-size: 14px;
+  color: #1565d8;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(21, 101, 216, 0.08);
+}
+
+.menu-links a:hover {
+  color: #0b2a6f;
+}
+
+.menu-texto {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1c2b45;
+}
+
+/* ===== Supabase: login, favoritos e cadastro ===== */
+.erro.sucesso {
+  color: #1a7f45;
+}
+
+.dica a {
+  color: #1565d8;
+  font-weight: 600;
+}
+
+.painel-direito button:disabled,
+.botao-menu-acao:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Coração de favorito no canto da foto */
+.botao-favorito {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(21, 101, 216, 0.15);
+  color: #9fb3cf;
+  font-size: 17px;
+  line-height: 32px;
+  transition: transform 0.15s, color 0.15s;
+}
+
+.botao-favorito:hover {
+  transform: scale(1.1);
+  color: #e0457b;
+}
+
+.botao-favorito.ativo {
+  color: #e0457b;
+  background: rgba(255, 228, 238, 0.9);
+}
+
+.form-menu input[readonly] {
+  color: #5a6b85;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* =====================================================================
+   ===== Versão para celular =====
+   Tudo aqui só vale para telas pequenas; no computador nada muda.
+   ===================================================================== */
+
+/* Trava a rolagem da página enquanto o menu lateral está aberto */
+body.menu-aberto {
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+
+  /* --- Campos com 16px: abaixo disso o iPhone dá zoom sozinho ao tocar --- */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* ---------- Login / nova senha ---------- */
+  .painel-direito input {
+    padding: 10px 6px;
+    margin-bottom: 18px;
+  }
+
+  .painel-direito label {
+    font-size: 13px;
+  }
+
+  .painel-direito button {
+    align-self: stretch;
+    min-height: 46px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+
+  .link-senha {
+    margin-top: -8px;
+    font-size: 13px;
+  }
+
+  .link-senha a,
+  .dica a {
+    display: inline-block;
+    padding: 10px 4px; /* área de toque maior sem mudar o visual */
+  }
+
+  .dica {
+    font-size: 13px;
+  }
+
+  .erro {
+    font-size: 13px;
+  }
+
+  /* ---------- Topo ---------- */
+  .topo {
+    padding: 0 12px;
+  }
+
+  .botao-menu {
+    width: 42px;
+    height: 42px;
+    padding: 0 11px;
+  }
+
+  .botao-sair {
+    min-height: 40px;
+    padding: 0 16px;
+  }
+
+  /* ---------- Destaque com a busca (mais baixo no celular) ---------- */
+  .hero {
+    padding: 80px 16px 36px;
+  }
+
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .busca {
+    margin-top: 20px;
+    padding: 5px;
+  }
+
+  .busca input {
+    padding: 11px 12px;
+  }
+
+  .busca button {
+    padding: 0 16px;
+  }
+
+  /* ---------- Filtros: categorias numa linha só, arrastando para o lado ---------- */
+  .conteudo {
+    padding: 16px 12px 32px;
+  }
+
+  .barra-filtros {
+    position: static;
+    padding: 10px 0;
+    gap: 10px;
+  }
+
+  .categorias {
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 0 12px 2px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .categorias::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    flex: none;
+    min-height: 40px;
+    padding: 0 16px;
+    scroll-snap-align: start;
+  }
+
+  .ordenar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 12px;
+  }
+
+  .ordenar select {
+    flex: 1;
+    max-width: 210px;
+    min-height: 40px;
+  }
+
+  .info-lista {
+    flex-direction: column;
+    margin: 14px 4px 10px;
+  }
+
+  /* ---------- Cards compactos: foto à esquerda, preço à direita ---------- */
+  .lista-produtos {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .produto {
+    display: grid;
+    grid-template-columns: 104px 1fr;
+    column-gap: 12px;
+    align-items: start;
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .produto-imagem {
+    grid-column: 1;
+    grid-row: 1 / span 5;
+    height: 104px;
+    border-radius: 12px;
+  }
+
+  .produto-imagem img {
+    max-width: 88%;
+    max-height: 88px;
+  }
+
+  /* A categoria já aparece nos filtros; no card pequeno ela só atrapalha */
+  .produto-imagem .produto-categoria {
+    display: none;
+  }
+
+  .botao-favorito {
+    top: 4px;
+    right: 4px;
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+    line-height: 30px;
+  }
+
+  .produto h2,
+  .produto .rotulo-preco,
+  .produto .preco,
+  .produto .na-loja,
+  .produto .selo {
+    grid-column: 2;
+  }
+
+  .produto h2 {
+    margin: 0 0 6px;
+    font-size: 14px;
+  }
+
+  .rotulo-preco,
+  .preco,
+  .na-loja {
+    margin: 0;
+  }
+
+  .rotulo-preco {
+    font-size: 10px;
+  }
+
+  .preco {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .na-loja {
+    font-size: 12px;
+  }
+
+  .selo {
+    justify-self: start;
+    margin: 6px 0 0;
+    font-size: 11px;
+  }
+
+  .botao-oferta,
+  .produto details {
+    grid-column: 1 / -1;
+  }
+
+  .botao-oferta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: 12px;
+  }
+
+  .produto details {
+    margin-top: 6px;
+    padding-top: 0;
+  }
+
+  .produto summary {
+    padding: 12px 4px;
+  }
+
+  .oferta {
+    min-height: 44px;
+  }
+
+  .outras-lojas {
+    line-height: 2;
+  }
+
+  .outras-lojas a {
+    display: inline-block;
+    padding: 6px 2px;
+  }
+
+  /* ---------- Menu lateral ---------- */
+  .menu-lateral {
+    width: 100%;
+    max-width: 360px;
+    padding: 14px 12px 28px;
+  }
+
+  .fechar-menu {
+    width: 40px;
+    height: 40px;
+  }
+
+  .menu-secao summary {
+    padding: 15px 16px;
+  }
+
+  .caixa {
+    min-height: 40px;
+    margin-top: 2px;
+    font-size: 14px;
+  }
+
+  .caixa input {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-menu input[type="text"],
+  .form-menu input[type="email"],
+  .form-menu input[type="tel"],
+  .form-menu input[type="number"] {
+    min-height: 44px;
+  }
+
+  .faixa-preco input {
+    min-width: 0;
+  }
+
+  .botao-menu-acao,
+  .botao-menu-secundario {
+    min-height: 46px;
+  }
+
+  .menu-links a {
+    padding: 11px 4px;
+  }
+
+  .aviso {
+    font-size: 11px;
+  }
+}
+
+/* Celulares bem estreitos (ex.: 320px) */
+@media (max-width: 360px) {
+  .topo .marca {
+    font-size: 13px;
+  }
+
+  .ola {
+    display: none;
+  }
+
+  .produto {
+    grid-template-columns: 88px 1fr;
+  }
+
+  .produto-imagem {
+    height: 88px;
+  }
+
+  .produto-imagem img {
+    max-height: 74px;
+  }
+
+  .preco {
+    font-size: 18px;
+  }
+}
+
+/* ===== Selo "Mais vendido" no card ===== */
+.selo-destaque {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff7a3d, #e0457b);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(224, 69, 123, 0.35);
+}
+
+@media (max-width: 600px) {
+  .selo-destaque {
+    left: 4px;
+    bottom: 4px;
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+}

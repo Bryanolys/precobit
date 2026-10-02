@@ -1,0 +1,12 @@
+{
+  "name": "precobit",
+  "private": true,
+  "description": "PreçoBit - comparador de preços de hardware",
+  "scripts": {
+    "dev": "node scripts/servidor.js",
+    "precos": "node scripts/atualizar-precos.js",
+    "enviar": "node scripts/atualizar-precos.js --so-enviar",
+    "publicar": "node scripts/preparar-site.js",
+    "deploy": "npm run publicar && npx --yes netlify-cli deploy --dir=publicar --prod --site=0242fa9d-15fc-4339-9fae-e22a38a864ec"
+  }
+}
