@@ -12,21 +12,23 @@ const mensagem = document.getElementById("mensagem-erro");
 // Textos de cada modo da tela
 const MODOS = {
   entrar: {
-    titulo: "Bem-vindo",
-    botao: "ENTRAR",
-    troca: 'Não tem conta? <a href="#" data-modo="criar">Criar conta</a>'
+    titulo: "Entrar",
+    botao: "Entrar",
+    troca: 'Ainda não tem conta? <a href="#" data-modo="criar">Cadastre-se grátis</a>'
   },
   criar: {
     titulo: "Criar conta",
-    botao: "CRIAR CONTA",
+    botao: "Criar conta",
     troca: 'Já tem conta? <a href="#" data-modo="entrar">Entrar</a>'
   },
   recuperar: {
     titulo: "Recuperar senha",
-    botao: "ENVIAR LINK",
-    troca: '<a href="#" data-modo="entrar">Voltar para o login</a>'
+    botao: "Enviar link",
+    troca: 'Lembrou a senha? <a href="#" data-modo="entrar">Voltar para o login</a>'
   }
 };
+
+const blocoSocial = document.getElementById("bloco-social");
 
 let modoAtual = "entrar";
 
@@ -41,10 +43,58 @@ function mudarModo(modo) {
   campoNome.hidden = modo !== "criar";
   campoSenha.hidden = modo === "recuperar";
   linkEsqueci.hidden = modo !== "entrar";
+  blocoSocial.hidden = modo === "recuperar";
   document.getElementById("senha").autocomplete = modo === "criar" ? "new-password" : "current-password";
 
   mostrarMensagem("");
 }
+
+// Botão de olho: mostra/esconde a senha
+const campoSenhaInput = document.getElementById("senha");
+const botaoMostrarSenha = document.getElementById("mostrar-senha");
+
+botaoMostrarSenha.addEventListener("click", function () {
+  const mostrando = campoSenhaInput.type === "text";
+  campoSenhaInput.type = mostrando ? "password" : "text";
+  botaoMostrarSenha.setAttribute("aria-pressed", String(!mostrando));
+  botaoMostrarSenha.setAttribute("aria-label", mostrando ? "Mostrar senha" : "Esconder senha");
+});
+
+// Entrar com Google / GitHub / Facebook
+const NOMES_PROVEDORES = { google: "Google", github: "GitHub", facebook: "Facebook" };
+
+async function provedorAtivo(provedor) {
+  try {
+    const resposta = await fetch(SUPABASE_URL + "/auth/v1/settings", { headers: { apikey: SUPABASE_ANON_KEY } });
+    const config = await resposta.json();
+    return Boolean(config.external && config.external[provedor]);
+  } catch (erro) {
+    return true; // na dúvida, deixa o Supabase responder
+  }
+}
+
+document.querySelectorAll(".botao-social").forEach(function (botao) {
+  botao.addEventListener("click", async function () {
+    if (!SUPABASE_CONFIGURADO) return mostrarMensagem("Configure o Supabase em js/supabase-config.js.");
+
+    const provedor = botao.dataset.provedor;
+    botao.disabled = true;
+
+    if (!(await provedorAtivo(provedor))) {
+      botao.disabled = false;
+      return mostrarMensagem("Entrar com " + NOMES_PROVEDORES[provedor] + " ainda não está disponível. Use e-mail e senha.");
+    }
+
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider: provedor,
+      options: { redirectTo: new URL("pages/home.html", window.location.href).href }
+    });
+
+    botao.disabled = false;
+    if (error) mostrarMensagem(traduzirErro(error));
+    // Sem erro, o navegador vai para a página do Google/GitHub/Facebook
+  });
+});
 
 function mostrarMensagem(texto, tipo = "erro") {
   mensagem.textContent = texto;

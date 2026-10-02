@@ -18,80 +18,21 @@ body {
 /* ===== Tela de login ===== */
 .pagina-login {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #0b2a6f, #1565d8 55%, #2aa8f2);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Grade sutil para dar um ar tecnológico */
-.pagina-login::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-/* Círculos decorativos (dentro de uma camada fixa que corta o que passa da tela,
-   para não criar rolagem para os lados no celular) */
-.fundo-bolhas {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.bolha {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
-  pointer-events: none;
-}
-
-.bolha-1 {
-  width: 420px;
-  height: 420px;
-  left: -120px;
-  bottom: -160px;
-}
-
-.bolha-2 {
-  width: 200px;
-  height: 200px;
-  right: -40px;
-  top: -60px;
-}
-
-/* Caixa principal */
-.login-box {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  width: 100%;
-  max-width: 620px;
-  min-height: 340px;
-  box-shadow: 0 20px 50px rgba(3, 18, 56, 0.5);
-}
-
-/* Painel esquerdo */
-.painel-esquerdo {
-  position: relative;
-  flex: 0 0 38%;
-  padding: 16px 20px;
+  padding: 24px 16px;
+  font-family: "Poppins", "Segoe UI", Arial, sans-serif;
   color: white;
-  background: linear-gradient(180deg, #0d3a94, #1e88e5);
-  display: flex;
-  flex-direction: column;
+  background:
+    radial-gradient(ellipse at 50% 45%, #1f7bf2 0%, rgba(31, 123, 242, 0) 60%),
+    linear-gradient(160deg, #0a3fae 0%, #0d5ad6 45%, #0a3a9e 100%);
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Logo (também usada no topo da home) */
 .marca {
   display: flex;
   align-items: center;
@@ -120,125 +61,6 @@ body {
   background: white;
 }
 
-.painel-titulo {
-  margin: auto 0;
-}
-
-/* Placa-mãe 3D acima do "Bem-vindo", flutuando devagar */
-.placa-3d {
-  display: block;
-  width: 100%;
-  max-width: 200px;
-  margin: 0 0 14px -6px;
-  filter: drop-shadow(0 10px 18px rgba(3, 18, 56, 0.45)) drop-shadow(0 0 14px rgba(127, 216, 255, 0.25));
-  animation: flutuar 4s ease-in-out infinite;
-}
-
-@keyframes flutuar {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .placa-3d {
-    animation: none;
-  }
-}
-
-.painel-titulo h1 {
-  font-size: 26px;
-  font-weight: 400;
-}
-
-.sublinhado {
-  display: block;
-  width: 44px;
-  height: 3px;
-  margin-top: 6px;
-  background: white;
-  border-radius: 2px;
-}
-
-/* Botão circular com seta que "sai" do painel */
-.seta {
-  position: absolute;
-  top: 50%;
-  right: -22px;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1e88e5, #4fc3f7);
-  color: white;
-  font-size: 28px;
-  line-height: 40px;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(13, 58, 148, 0.45);
-  z-index: 2;
-}
-
-/* Painel direito */
-.painel-direito {
-  flex: 1;
-  background: #e9edf3;
-  padding: 48px 56px 24px 64px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.painel-direito label {
-  display: block;
-  font-size: 12px;
-  color: #1565d8;
-  margin-bottom: 4px;
-}
-
-.painel-direito input {
-  width: 100%;
-  padding: 6px 6px;
-  margin-bottom: 22px;
-  border: none;
-  border-bottom: 1px solid #90b8ec;
-  background: transparent;
-  font-size: 13px;
-  color: #0b2a6f;
-}
-
-.painel-direito input::placeholder {
-  color: #8fb0dc;
-}
-
-.painel-direito input:focus {
-  outline: none;
-  border-bottom-color: #1565d8;
-}
-
-.link-senha {
-  font-size: 11px;
-  color: #1565d8;
-  margin-top: -12px;
-}
-
-.link-senha a {
-  color: #1565d8;
-}
-
-.painel-direito button {
-  padding: 8px 14px;
-  background: linear-gradient(135deg, #1565d8, #2aa8f2);
-  color: white;
-  font-size: 13px;
-  border-radius: 0;
-  align-self: flex-start;
-  transition: filter 0.2s, box-shadow 0.2s;
-}
-
-.painel-direito button:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 0 12px rgba(42, 168, 242, 0.6);
-}
-
 button {
   cursor: pointer;
   border: none;
@@ -246,44 +68,330 @@ button {
   font-size: 15px;
 }
 
-#form-login {
+/* --- Cena de fundo: painel de vidro grande + formas 3D flutuando --- */
+.cena {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.painel-fundo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(880px, 82vw);
+  height: min(500px, 72vh);
+  transform: translate(-50%, -50%);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 80px rgba(3, 18, 56, 0.35);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.forma {
+  position: absolute;
+  display: block;
+  filter: drop-shadow(0 18px 24px rgba(3, 18, 56, 0.35));
+  animation: flutuar 7s ease-in-out infinite;
+}
+
+/* Cada forma no seu lugar, com tamanho, giro e ritmo próprios */
+.forma-anel        { width: 110px; left: calc(50% - 230px); top: calc(50% - 330px); animation-duration: 8s; }
+.forma-zigue       { width: 150px; left: calc(50% - 370px); top: calc(50% - 170px); transform: rotate(-28deg); animation-delay: -2s; }
+.forma-zigue-2     { width: 90px;  left: calc(50% - 380px); top: calc(50% - 90px);  transform: rotate(-22deg); animation-delay: -4s; }
+.forma-espiral     { width: 190px; left: calc(50% - 330px); top: calc(50% + 40px);  animation-duration: 9s; }
+.forma-laco        { width: 280px; left: calc(50% + 60px);  top: calc(50% - 250px); transform: rotate(8deg); opacity: 0.85; animation-delay: -3s; }
+.forma-laco-2      { width: 360px; left: calc(50% - 720px); top: calc(50% + 60px);  transform: rotate(-12deg); opacity: 0.35; filter: blur(3px); animation-duration: 11s; }
+.forma-onda        { width: 120px; left: calc(50% + 230px); top: calc(50% + 70px);  animation-delay: -1s; }
+.forma-onda-2      { width: 90px;  left: calc(50% + 280px); top: calc(50% + 115px); animation-delay: -5s; }
+.forma-onda-grossa { width: 320px; left: calc(50% + 380px); top: calc(50% + 120px); transform: rotate(-6deg); animation-duration: 10s; }
+.forma-placa       { width: 180px; left: calc(50% + 300px); top: calc(50% - 300px); opacity: 0.9; animation-delay: -6s; }
+
+@keyframes flutuar {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .forma {
+    animation: none;
+  }
+}
+
+/* --- Cartão de login (vidro) --- */
+.cartao-login {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  padding: 30px 32px 24px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 24px 60px rgba(3, 18, 56, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.marca-login {
+  justify-content: center;
+  margin-bottom: 18px;
+  font-size: 15px;
+}
+
+.cartao-login h1 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#form-login,
+.form-cartao {
   display: flex;
   flex-direction: column;
 }
 
-.erro {
-  color: #d93025;
+.campo {
+  margin-bottom: 12px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 5px;
   font-size: 12px;
+  font-weight: 500;
+}
+
+.campo input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: white;
+  color: #0b2a6f;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.campo input::placeholder {
+  color: #9aa9c2;
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: #7fd8ff;
+  box-shadow: 0 0 0 3px rgba(127, 216, 255, 0.35);
+}
+
+/* Senha com botão de mostrar/esconder */
+.campo-senha {
+  position: relative;
+}
+
+.campo-senha input {
+  padding-right: 40px;
+}
+
+.mostrar-senha {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 38px;
+  height: 36px;
+  background: transparent;
+  color: #7d8fae;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mostrar-senha svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.mostrar-senha[aria-pressed="true"] {
+  color: #1565d8;
+}
+
+.link-esqueci {
+  align-self: flex-start;
+  margin-top: -2px;
+  font-size: 12px;
+  color: white;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.link-esqueci:hover {
+  text-decoration: underline;
+}
+
+.erro {
   min-height: 16px;
   margin: 8px 0;
+  font-size: 12px;
+  color: #ffd4d4;
 }
 
-.dica {
-  margin-top: 20px;
+.erro.sucesso {
+  color: #b9f6d0;
+}
+
+/* Sem mensagem, não reserva espaço */
+.erro:empty {
+  min-height: 0;
+  margin: 6px 0;
+}
+
+.botao-entrar {
+  height: 38px;
+  border-radius: 6px;
+  background: #0a2a66;
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.botao-entrar:hover {
+  background: #0c3584;
+  box-shadow: 0 6px 18px rgba(3, 18, 56, 0.35);
+}
+
+.botao-entrar:disabled,
+.botao-social:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* "ou continue com" + botões sociais */
+.divisor {
+  margin: 18px 0 12px;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.botoes-sociais {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.botao-social {
+  height: 34px;
+  border-radius: 6px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.botao-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+.botao-social:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(3, 18, 56, 0.25);
+}
+
+.rodape-login {
+  margin-top: 18px;
   font-size: 11px;
-  color: #7a8aa3;
+  text-align: center;
+  opacity: 0.9;
 }
 
-/* Celular: empilha os painéis */
-@media (max-width: 560px) {
-  .login-box {
-    flex-direction: column;
+.rodape-login a {
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rodape-login a:hover {
+  text-decoration: underline;
+}
+
+/* --- Tablets: formas mais perto do cartão --- */
+@media (max-width: 900px) {
+  .forma-zigue,
+  .forma-zigue-2 { left: 4%; }
+  .forma-espiral { left: 2%; }
+  .forma-onda,
+  .forma-onda-2 { left: auto; right: 6%; }
+  .forma-onda-grossa { left: auto; right: -140px; }
+  .forma-placa { left: auto; right: 2%; }
+}
+
+/* --- Celular --- */
+@media (max-width: 600px) {
+  .pagina-login {
+    align-items: flex-start;
+    padding: 72px 16px 32px;
   }
 
-  .painel-esquerdo {
-    flex: none;
-    min-height: 140px;
+  .painel-fundo,
+  .forma-laco-2,
+  .forma-zigue-2,
+  .forma-onda-2 {
+    display: none;
   }
 
-  .seta {
-    top: auto;
-    bottom: -22px;
-    right: 50%;
-    transform: translateX(50%) rotate(90deg);
+  .forma-anel        { width: 70px;  left: 6%;  top: 14px; }
+  .forma-placa       { width: 110px; left: auto; right: 4%; top: 8px; }
+  .forma-zigue       { width: 90px;  left: -20px; top: 48%; }
+  .forma-espiral     { width: 120px; left: -30px; top: auto; bottom: 40px; }
+  .forma-laco        { width: 170px; left: auto; right: -50px; top: 38%; opacity: 0.6; }
+  .forma-onda        { width: 90px;  right: 8%; top: auto; bottom: 90px; }
+  .forma-onda-grossa { width: 200px; right: -70px; top: auto; bottom: -10px; }
+
+  .cartao-login {
+    max-width: 400px;
+    padding: 26px 22px 22px;
   }
 
-  .painel-direito {
-    padding: 40px 24px 24px;
+  .campo input {
+    height: 44px;
+  }
+
+  .mostrar-senha {
+    width: 44px;
+    height: 44px;
+  }
+
+  .link-esqueci {
+    padding: 8px 0;
+    font-size: 13px;
+  }
+
+  .botao-entrar {
+    height: 46px;
+    font-size: 15px;
+  }
+
+  .botao-social {
+    height: 44px;
+  }
+
+  .rodape-login {
+    font-size: 13px;
+  }
+
+  .rodape-login a {
+    display: inline-block;
+    padding: 8px 2px;
   }
 }
 
@@ -1053,16 +1161,6 @@ button {
 }
 
 /* ===== Supabase: login, favoritos e cadastro ===== */
-.erro.sucesso {
-  color: #1a7f45;
-}
-
-.dica a {
-  color: #1565d8;
-  font-weight: 600;
-}
-
-.painel-direito button:disabled,
 .botao-menu-acao:disabled {
   opacity: 0.6;
   cursor: wait;
@@ -1118,42 +1216,6 @@ body.menu-aberto {
   select,
   textarea {
     font-size: 16px !important;
-  }
-
-  /* ---------- Login / nova senha ---------- */
-  .painel-direito input {
-    padding: 10px 6px;
-    margin-bottom: 18px;
-  }
-
-  .painel-direito label {
-    font-size: 13px;
-  }
-
-  .painel-direito button {
-    align-self: stretch;
-    min-height: 46px;
-    font-size: 15px;
-    border-radius: 10px;
-  }
-
-  .link-senha {
-    margin-top: -8px;
-    font-size: 13px;
-  }
-
-  .link-senha a,
-  .dica a {
-    display: inline-block;
-    padding: 10px 4px; /* área de toque maior sem mudar o visual */
-  }
-
-  .dica {
-    font-size: 13px;
-  }
-
-  .erro {
-    font-size: 13px;
   }
 
   /* ---------- Topo ---------- */

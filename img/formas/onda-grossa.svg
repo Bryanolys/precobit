@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 160">
+  <defs>
+    <linearGradient id="gondagrossa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8cc4ff"/>
+      <stop offset="0.5" stop-color="#3f86f0"/>
+      <stop offset="1" stop-color="#1a4fb8"/>
+    </linearGradient>
+    <linearGradient id="bondagrossa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="0.6" stop-color="#ffffff" stop-opacity="0.125"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="sondagrossa" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="11.5"/></filter>
+  </defs>
+  <path d="M30 90 C60 40 100 40 120 80 S180 120 230 60" fill="none" stroke="#031238" stroke-opacity=".35" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" transform="translate(6.8999999999999995 16.099999999999998)" filter="url(#sondagrossa)"/>
+  <path d="M30 90 C60 40 100 40 120 80 S180 120 230 60" fill="none" stroke="url(#gondagrossa)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M30 90 C60 40 100 40 120 80 S180 120 230 60" fill="none" stroke="#1a4fb8" stroke-opacity=".35" stroke-width="13.799999999999999" stroke-linecap="round" stroke-linejoin="round" transform="translate(6.44 9.200000000000001)"/>
+  <path d="M30 90 C60 40 100 40 120 80 S180 120 230 60" fill="none" stroke="url(#bondagrossa)" stroke-width="13.799999999999999" stroke-linecap="round" stroke-linejoin="round" transform="translate(-7.36 -9.200000000000001)"/>
+</svg>

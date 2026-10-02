@@ -3,50 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b2a6f">
+  <meta name="theme-color" content="#0b3a9a">
   <title>PreçoBit - Nova senha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="pagina-login">
 
-  <div class="fundo-bolhas">
-    <div class="bolha bolha-1"></div>
-    <div class="bolha bolha-2"></div>
+  <!-- Formas 3D flutuando no fundo (só decoração) -->
+  <div class="cena" aria-hidden="true">
+    <div class="painel-fundo"></div>
+    <img class="forma forma-anel" src="../img/formas/anel.svg" alt="">
+    <img class="forma forma-zigue" src="../img/formas/zigue.svg" alt="">
+    <img class="forma forma-espiral" src="../img/formas/espiral.svg" alt="">
+    <img class="forma forma-laco" src="../img/formas/laco.svg" alt="">
+    <img class="forma forma-onda" src="../img/formas/onda.svg" alt="">
+    <img class="forma forma-onda-grossa" src="../img/formas/onda-grossa.svg" alt="">
+    <img class="forma forma-placa" src="../img/placa-mae-3d.svg" alt="">
   </div>
 
-  <main class="login-box">
+  <main class="cartao-login">
+    <div class="marca marca-login">
+      <span class="marca-icone"></span>
+      PREÇOBIT
+    </div>
 
-    <section class="painel-esquerdo">
-      <div class="marca">
-        <span class="marca-icone"></span>
-        PREÇOBIT
-      </div>
+    <h1>Nova senha</h1>
 
-      <div class="painel-titulo">
-        <img class="placa-3d" src="../img/placa-mae-3d.svg" alt="Ilustração 3D de uma placa-mãe">
-        <h1>Nova senha</h1>
-        <span class="sublinhado"></span>
-      </div>
-
-      <span class="seta">&#8250;</span>
-    </section>
-
-    <section class="painel-direito">
-      <form id="form-nova-senha" novalidate>
-        <label for="senha">NOVA SENHA</label>
+    <form id="form-nova-senha" class="form-cartao" novalidate>
+      <div class="campo">
+        <label for="senha">Nova senha</label>
         <input type="password" id="senha" placeholder="Mínimo de 6 caracteres" autocomplete="new-password">
+      </div>
 
-        <label for="confirmar">CONFIRMAR SENHA</label>
+      <div class="campo">
+        <label for="confirmar">Confirmar senha</label>
         <input type="password" id="confirmar" placeholder="Digite de novo" autocomplete="new-password">
+      </div>
 
-        <p id="mensagem" class="erro" role="alert"></p>
+      <p id="mensagem" class="erro" role="alert"></p>
 
-        <button type="submit" id="botao-salvar">SALVAR SENHA</button>
-      </form>
+      <button type="submit" id="botao-salvar" class="botao-entrar">Salvar senha</button>
+    </form>
 
-      <p class="dica"><a href="../index.html">Voltar para o login</a></p>
-    </section>
-
+    <p class="rodape-login">Lembrou a senha? <a href="../index.html">Voltar para o login</a></p>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
