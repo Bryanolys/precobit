@@ -12,56 +12,12 @@ const divCategorias = document.getElementById("categorias");
 const listaProdutos = document.getElementById("lista-produtos");
 const contador = document.getElementById("contador");
 
-// Ilustração padrão de cada categoria (usada quando o produto não tem foto)
-const IMAGENS_CATEGORIA = {
-  "Processadores": "../img/categorias/processador.svg",
-  "Placas de vídeo": "../img/categorias/placa-de-video.svg",
-  "Memória RAM": "../img/categorias/memoria-ram.svg",
-  "Armazenamento": "../img/categorias/armazenamento.svg",
-  "Placas-mãe": "../img/categorias/placa-mae.svg",
-  "Fontes": "../img/categorias/fontes.svg"
-};
-
 // Lojas que bloqueiam a busca automática: mostramos só um link de pesquisa
 const OUTRAS_LOJAS = [
   { nome: "Pichau", url: (t) => "https://www.pichau.com.br/search?q=" + encodeURIComponent(t) },
   { nome: "Terabyte", url: (t) => "https://www.terabyteshop.com.br/busca?str=" + encodeURIComponent(t) },
   { nome: "Mercado Livre", url: (t) => "https://lista.mercadolivre.com.br/" + encodeURIComponent(t.replace(/\s+/g, "-")) }
 ];
-
-// ===== Funções de apoio =====
-
-// Formata número como dinheiro: 1234.5 -> "R$ 1.234,50"
-function formatarPreco(valor) {
-  return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-}
-
-// Evita que textos vindos das lojas ou do banco quebrem o HTML
-function escapar(texto) {
-  return String(texto)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-// Mesmo slug que o script de preços gera: "Placa-mãe ASUS" -> "placa-mae-asus"
-function criarSlug(texto) {
-  return texto
-    .normalize("NFD").replace(/[̀-ͯ]/g, "")
-    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-// Calcula menor preço e a economia de cada produto
-function calcularResumo(produto) {
-  const ofertasOrdenadas = [...produto.ofertas].sort((a, b) => a.preco - b.preco);
-  const melhor = ofertasOrdenadas[0];
-  const pior = ofertasOrdenadas[ofertasOrdenadas.length - 1];
-
-  return {
-    ...produto,
-    ofertas: ofertasOrdenadas,
-    melhor: melhor,
-    economia: pior.preco - melhor.preco
-  };
-}
 
 // ===== Sessão =====
 async function carregarUsuario() {
@@ -97,52 +53,12 @@ if (SUPABASE_CONFIGURADO) {
 
 // ===== Produtos =====
 
-// Busca produtos + ofertas no Supabase. Se o banco estiver vazio ou der erro,
-// usa o arquivo js/produtos.js como reserva.
+// Carrega os produtos (do Supabase ou, como reserva, do arquivo local)
 async function carregarProdutos() {
-  const colunasOfertas = "ofertas (loja, titulo, preco, preco_normal, link)";
-  let { data, error } = await supabaseClient
-    .from("produtos")
-    .select("slug, nome, categoria, imagem, atualizado_em, popularidade, selo, " + colunasOfertas);
-
-  // Banco sem as colunas de ranking (migração 002 ainda não rodada): busca sem elas
-  if (error && error.code === "42703") {
-    ({ data, error } = await supabaseClient
-      .from("produtos")
-      .select("slug, nome, categoria, imagem, atualizado_em, " + colunasOfertas));
-  }
-
-  const comOfertas = (data || []).filter((p) => p.ofertas && p.ofertas.length > 0);
-
-  if (error || comOfertas.length === 0) {
-    if (error) console.warn("Supabase: não foi possível ler os produtos.", error.message);
-    dadosDoBanco = false;
-    produtosBase = PRODUTOS.map((p) => ({ ...p, slug: p.slug || criarSlug(p.nome) }));
-    mostrarDataAtualizacao(ATUALIZADO_EM, " (arquivo local)");
-    return;
-  }
-
-  dadosDoBanco = true;
-  produtosBase = comOfertas.map(function (p) {
-    return {
-      slug: p.slug,
-      nome: p.nome,
-      categoria: p.categoria,
-      imagem: p.imagem,
-      popularidade: p.popularidade ?? null,
-      selo: p.selo ?? null,
-      ofertas: p.ofertas.map((o) => ({
-        loja: o.loja,
-        titulo: o.titulo,
-        preco: Number(o.preco),
-        precoNormal: o.preco_normal ? Number(o.preco_normal) : null,
-        link: o.link
-      }))
-    };
-  });
-
-  const maisRecente = comOfertas.map((p) => p.atualizado_em).sort().pop();
-  mostrarDataAtualizacao(maisRecente, "");
+  const resultado = await buscarProdutos();
+  produtosBase = resultado.produtos;
+  dadosDoBanco = resultado.doBanco;
+  mostrarDataAtualizacao(resultado.atualizadoEm, resultado.doBanco ? "" : " (arquivo local)");
 }
 
 function mostrarDataAtualizacao(dataIso, sufixo) {
@@ -356,7 +272,7 @@ function criarCard(produto) {
 
   // Usa a foto do produto (se tiver); se falhar, cai na ilustração da categoria
   const imagemCategoria = IMAGENS_CATEGORIA[produto.categoria];
-  const imagem = produto.imagem ? "../img/produtos/" + escapar(produto.imagem) : imagemCategoria;
+  const imagem = imagemDoProduto(produto);
 
   return `
     <article class="produto">

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b2a6f">
+  <title>Monte seu PC - PreçoBit</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="pagina-home">
+
+  <div class="fundo-cores">
+    <span></span><span></span><span></span>
+  </div>
+
+  <header class="topo vidro">
+    <div class="topo-esquerda">
+      <div class="marca">
+        <span class="marca-icone"></span>
+        PREÇOBIT
+      </div>
+    </div>
+    <div class="topo-direita">
+      <a href="home.html" class="botao-sair">← Produtos</a>
+    </div>
+  </header>
+
+  <section class="hero hero-baixo">
+    <h1>Monte seu <span>PC</span></h1>
+    <p>Escolha uma peça de cada tipo. A gente soma o menor preço e confere se tudo combina.</p>
+  </section>
+
+  <main class="conteudo montador">
+
+    <!-- Uma linha para cada tipo de peça (preenchida pelo JavaScript) -->
+    <section id="lista-pecas" class="lista-pecas" aria-label="Peças do PC">
+      <p class="vazio">Carregando produtos...</p>
+    </section>
+
+    <!-- Resumo: total, consumo e avisos de compatibilidade -->
+    <aside class="resumo-pc vidro" aria-label="Resumo da montagem">
+      <p class="rotulo-preco">Total pelo menor preço</p>
+      <p id="total-pc" class="preco total-pc">R$ 0,00</p>
+      <p id="pecas-escolhidas" class="na-loja">Nenhuma peça escolhida</p>
+
+      <div class="consumo">
+        <div>
+          <span>Consumo estimado</span>
+          <strong id="consumo-estimado">-</strong>
+        </div>
+        <div>
+          <span>Fonte recomendada</span>
+          <strong id="fonte-recomendada">-</strong>
+        </div>
+      </div>
+
+      <h2 class="titulo-checagem">Compatibilidade</h2>
+      <ul id="checagens" class="checagens"></ul>
+
+      <div class="acoes-pc">
+        <button type="button" id="copiar-link" class="botao-oferta" disabled>Copiar link da montagem</button>
+        <button type="button" id="limpar-pc" class="botao-menu-secundario" disabled>Limpar tudo</button>
+      </div>
+      <p id="mensagem-pc" class="menu-mensagem sucesso" aria-live="polite"></p>
+    </aside>
+
+    <p class="aviso montador-aviso">* Consumo e compatibilidade são estimativas feitas a partir do nome de cada peça.
+      Confira as especificações na loja antes de comprar. Preços atualizados em <strong id="atualizado-em"></strong>.</p>
+  </main>
+
+  <!-- Janela para escolher a peça -->
+  <dialog id="janela-escolha" class="janela-escolha" aria-labelledby="titulo-escolha">
+    <div class="janela-topo">
+      <h2 id="titulo-escolha">Escolher peça</h2>
+      <button type="button" id="fechar-escolha" class="fechar-menu" aria-label="Fechar">✕</button>
+    </div>
+    <input type="search" id="busca-escolha" class="busca-escolha" placeholder="Filtrar por nome...">
+    <ul id="opcoes-escolha" class="opcoes-escolha"></ul>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/produtos.js"></script>
+  <script src="../js/comum.js"></script>
+  <script src="../js/montar-pc.js"></script>
+</body>
+</html>
