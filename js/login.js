@@ -31,6 +31,7 @@ const MODOS = {
 const blocoSocial = document.getElementById("bloco-social");
 
 let modoAtual = "entrar";
+let temLoginSocial = false; // vira true se algum botão social estiver ligado no Supabase
 
 function mudarModo(modo) {
   modoAtual = modo;
@@ -43,7 +44,7 @@ function mudarModo(modo) {
   campoNome.hidden = modo !== "criar";
   campoSenha.hidden = modo === "recuperar";
   linkEsqueci.hidden = modo !== "entrar";
-  blocoSocial.hidden = modo === "recuperar";
+  blocoSocial.hidden = modo === "recuperar" || !temLoginSocial;
   document.getElementById("senha").autocomplete = modo === "criar" ? "new-password" : "current-password";
 
   mostrarMensagem("");
@@ -63,14 +64,32 @@ botaoMostrarSenha.addEventListener("click", function () {
 // Entrar com Google / GitHub / Facebook
 const NOMES_PROVEDORES = { google: "Google", github: "GitHub", facebook: "Facebook" };
 
-async function provedorAtivo(provedor) {
+// Lê no Supabase quais logins estão ligados (null se não conseguir ler)
+async function lerProvedores() {
   try {
     const resposta = await fetch(SUPABASE_URL + "/auth/v1/settings", { headers: { apikey: SUPABASE_ANON_KEY } });
-    const config = await resposta.json();
-    return Boolean(config.external && config.external[provedor]);
+    return (await resposta.json()).external || null;
   } catch (erro) {
-    return true; // na dúvida, deixa o Supabase responder
+    return null;
   }
+}
+
+async function provedorAtivo(provedor) {
+  const provedores = await lerProvedores();
+  return provedores ? Boolean(provedores[provedor]) : true; // na dúvida, deixa o Supabase responder
+}
+
+// Mostra só os botões sociais que estão ligados no Supabase (Authentication > Providers)
+async function mostrarBotoesSociais() {
+  if (!SUPABASE_CONFIGURADO) return;
+  const provedores = await lerProvedores();
+  if (!provedores) return; // sem resposta: deixa os botões escondidos
+
+  document.querySelectorAll(".botao-social").forEach(function (botao) {
+    botao.hidden = !provedores[botao.dataset.provedor];
+  });
+  temLoginSocial = document.querySelector(".botao-social:not([hidden])") !== null;
+  blocoSocial.hidden = modoAtual === "recuperar" || !temLoginSocial;
 }
 
 document.querySelectorAll(".botao-social").forEach(function (botao) {
@@ -87,7 +106,7 @@ document.querySelectorAll(".botao-social").forEach(function (botao) {
 
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: provedor,
-      options: { redirectTo: new URL("pages/home.html", window.location.href).href }
+      options: { redirectTo: new URL("home.html", window.location.href).href }
     });
 
     botao.disabled = false;
@@ -162,7 +181,7 @@ formLogin.addEventListener("submit", async function (evento) {
     if (modoAtual === "entrar") {
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
       if (error) throw error;
-      window.location.href = "pages/home.html";
+      window.location.href = "home.html";
     }
 
     if (modoAtual === "criar") {
@@ -171,7 +190,7 @@ formLogin.addEventListener("submit", async function (evento) {
         password: senha,
         options: {
           data: { nome: nome },
-          emailRedirectTo: new URL("pages/home.html", window.location.href).href
+          emailRedirectTo: new URL("home.html", window.location.href).href
         }
       });
       if (error) throw error;
@@ -187,7 +206,7 @@ formLogin.addEventListener("submit", async function (evento) {
 
       if (data.session) {
         // Confirmação de e-mail desligada no Supabase: já entra direto
-        window.location.href = "pages/home.html";
+        window.location.href = "home.html";
       } else {
         mudarModo("entrar");
         mostrarMensagem("Conta criada! Enviamos um link de confirmação para " + email + ".", "sucesso");
@@ -196,7 +215,7 @@ formLogin.addEventListener("submit", async function (evento) {
 
     if (modoAtual === "recuperar") {
       const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: new URL("pages/nova-senha.html", window.location.href).href
+        redirectTo: new URL("nova-senha.html", window.location.href).href
       });
       if (error) throw error;
       mostrarMensagem("Se esse e-mail tiver conta, você vai receber um link para criar uma nova senha.", "sucesso");
@@ -215,8 +234,9 @@ async function verificarSessao() {
     return;
   }
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session) window.location.href = "pages/home.html";
+  if (data.session) window.location.href = "home.html";
 }
 
 mudarModo("entrar");
 verificarSessao();
+mostrarBotoesSociais();

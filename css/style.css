@@ -1527,6 +1527,34 @@ body.menu-aberto {
   }
 }
 
+/* ===== Visitante (sem conta) ===== */
+.convite-conta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 4px 8px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #3a4a66;
+}
+
+.convite-conta .botao-menu-acao,
+a.botao-menu-acao {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.botao-entrar-topo {
+  background: white;
+  color: #0b2a6f;
+  font-weight: 600;
+}
+
+.botao-entrar-topo:hover {
+  background: #e6f0ff;
+}
+
 /* ===== Monte seu PC ===== */
 
 /* Botão no topo da home e link logo abaixo da busca */

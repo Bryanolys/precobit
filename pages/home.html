@@ -27,8 +27,9 @@
     </div>
     <div class="topo-direita">
       <a href="montar-pc.html" class="botao-sair botao-montar">🛠️ <span>Monte seu PC</span></a>
-      <span class="ola">Olá, <strong id="nome-usuario"></strong></span>
-      <button id="botao-sair" class="botao-sair">Sair</button>
+      <span class="ola so-logado" hidden>Olá, <strong id="nome-usuario"></strong></span>
+      <button id="botao-sair" class="botao-sair so-logado" hidden>Sair</button>
+      <a href="entrar.html" class="botao-sair botao-entrar-topo so-visitante" hidden>Entrar</a>
     </div>
   </header>
 
@@ -45,7 +46,12 @@
     <details class="menu-secao" open>
       <summary>👤 Meu cadastro</summary>
 
-      <div class="perfil">
+      <div class="convite-conta so-visitante" hidden>
+        <p>Crie uma conta grátis para salvar seus <strong>favoritos ♥</strong> e seu cadastro.</p>
+        <a href="entrar.html" class="botao-menu-acao">Entrar ou criar conta</a>
+      </div>
+
+      <div class="perfil so-logado" hidden>
         <span id="avatar" class="avatar"></span>
         <div>
           <strong id="perfil-usuario"></strong>
@@ -53,7 +59,7 @@
         </div>
       </div>
 
-      <form id="form-cadastro" class="form-menu">
+      <form id="form-cadastro" class="form-menu so-logado" hidden>
         <label for="cad-nome">Nome completo</label>
         <input type="text" id="cad-nome" placeholder="Seu nome">
 
@@ -65,11 +71,6 @@
 
         <label for="cad-cidade">Cidade / UF</label>
         <input type="text" id="cad-cidade" placeholder="São Paulo / SP">
-
-        <label class="caixa">
-          <input type="checkbox" id="cad-alertas">
-          Quero receber alertas de queda de preço
-        </label>
 
         <button type="submit" class="botao-menu-acao">Salvar cadastro</button>
         <p id="cadastro-mensagem" class="menu-mensagem"></p>
@@ -124,7 +125,7 @@
         <span class="rotulo-menu">Sobre</span>
         <p class="menu-texto">PreçoBit: comparador de preços de hardware feito como projeto de estudo.</p>
 
-        <button type="button" id="menu-sair" class="botao-menu-secundario">Sair da conta</button>
+        <button type="button" id="menu-sair" class="botao-menu-secundario so-logado" hidden>Sair da conta</button>
       </div>
     </details>
   </aside>

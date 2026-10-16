@@ -20,34 +20,30 @@ const OUTRAS_LOJAS = [
 ];
 
 // ===== Sessão =====
+// Qualquer pessoa pode ver os preços; a conta só é necessária para favoritos e cadastro.
 async function carregarUsuario() {
-  if (!SUPABASE_CONFIGURADO) {
-    window.location.href = "../index.html";
-    return false;
+  if (SUPABASE_CONFIGURADO) {
+    const { data } = await supabaseClient.auth.getSession();
+    usuario = data.session ? data.session.user : null;
   }
 
-  const { data } = await supabaseClient.auth.getSession();
-  if (!data.session) {
-    window.location.href = "../index.html";
-    return false;
-  }
-
-  usuario = data.session.user;
-  return true;
+  // Topo e menu mudam conforme a pessoa está logada ou não
+  document.querySelectorAll(".so-logado").forEach((el) => (el.hidden = !usuario));
+  document.querySelectorAll(".so-visitante").forEach((el) => (el.hidden = Boolean(usuario)));
 }
 
 async function sair() {
   await supabaseClient.auth.signOut();
-  window.location.href = "../index.html";
+  window.location.reload();
 }
 
 document.getElementById("botao-sair").addEventListener("click", sair);
 document.getElementById("menu-sair").addEventListener("click", sair);
 
-// Se a sessão acabar em outra aba, volta para o login
+// Se a pessoa sair em outra aba, a página volta ao modo visitante
 if (SUPABASE_CONFIGURADO) {
   supabaseClient.auth.onAuthStateChange(function (evento) {
-    if (evento === "SIGNED_OUT") window.location.href = "../index.html";
+    if (evento === "SIGNED_OUT" && usuario) window.location.reload();
   });
 }
 
@@ -80,6 +76,12 @@ async function carregarFavoritos() {
 }
 
 async function alternarFavorito(slug, botao) {
+  // Visitante: favoritar precisa de conta
+  if (!usuario) {
+    window.location.href = "entrar.html";
+    return;
+  }
+
   const eraFavorito = favoritos.has(slug);
   botao.disabled = true;
 
@@ -267,7 +269,7 @@ function criarCard(produto) {
   const ehFavorito = favoritos.has(produto.slug);
   const botaoFavorito = dadosDoBanco
     ? `<button class="botao-favorito${ehFavorito ? " ativo" : ""}" data-slug="${escapar(produto.slug)}"
-         aria-pressed="${ehFavorito}" title="${ehFavorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}">♥</button>`
+         aria-pressed="${ehFavorito}" title="${!usuario ? "Entre para salvar nos favoritos" : ehFavorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}">♥</button>`
     : "";
 
   // Usa a foto do produto (se tiver); se falhar, cai na ilustração da categoria
@@ -344,7 +346,6 @@ const camposCadastro = {
   telefone: document.getElementById("cad-telefone"),
   cidade: document.getElementById("cad-cidade")
 };
-const caixaAlertas = document.getElementById("cad-alertas");
 const mensagemCadastro = document.getElementById("cadastro-mensagem");
 
 function mostrarPerfil(nome) {
@@ -360,7 +361,7 @@ async function carregarCadastro() {
 
   const { data, error } = await supabaseClient
     .from("perfis")
-    .select("nome, telefone, cidade, alertas")
+    .select("nome, telefone, cidade")
     .eq("id", usuario.id)
     .maybeSingle();
 
@@ -370,7 +371,6 @@ async function carregarCadastro() {
   for (const campo in camposCadastro) {
     camposCadastro[campo].value = perfil[campo] || "";
   }
-  caixaAlertas.checked = Boolean(perfil.alertas);
   mostrarPerfil(perfil.nome);
 }
 
@@ -383,7 +383,6 @@ formCadastro.addEventListener("submit", async function (evento) {
     nome: camposCadastro.nome.value.trim(),
     telefone: camposCadastro.telefone.value.trim(),
     cidade: camposCadastro.cidade.value.trim(),
-    alertas: caixaAlertas.checked,
     atualizado_em: new Date().toISOString()
   };
 
@@ -404,16 +403,14 @@ formCadastro.addEventListener("submit", async function (evento) {
 
 // ===== Início =====
 async function iniciar() {
-  const logado = await carregarUsuario();
-  if (!logado) return;
-
   listaProdutos.innerHTML = '<p class="vazio">Carregando produtos...</p>';
 
-  await Promise.all([carregarCadastro(), carregarProdutos()]);
-  await carregarFavoritos();
+  await carregarUsuario();
+  await Promise.all([usuario ? carregarCadastro() : null, carregarProdutos()]);
+  if (usuario) await carregarFavoritos();
 
-  // Favoritos só aparecem no filtro quando os produtos vêm do banco
-  document.getElementById("opcao-favoritos").hidden = !dadosDoBanco;
+  // O filtro de favoritos só aparece para quem está logado (e com os produtos do banco)
+  document.getElementById("opcao-favoritos").hidden = !(dadosDoBanco && usuario);
 
   montarCategorias();
   mostrarProdutos();
