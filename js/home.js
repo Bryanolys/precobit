@@ -109,6 +109,17 @@ async function alternarFavorito(slug, botao) {
   }
 }
 
+// Ao abrir "Comparar lojas", desenha o histórico de preços (só na primeira vez)
+listaProdutos.addEventListener("toggle", function (evento) {
+  const detalhes = evento.target;
+  if (!detalhes.open) return;
+  const caixa = detalhes.querySelector(".historico");
+  if (caixa && !caixa.dataset.carregado) {
+    caixa.dataset.carregado = "sim";
+    desenharHistorico(caixa, caixa.dataset.slug);
+  }
+}, true); // "toggle" não sobe para o pai, por isso escuta na fase de captura
+
 listaProdutos.addEventListener("click", function (evento) {
   const botao = evento.target.closest(".botao-favorito");
   if (botao) alternarFavorito(botao.dataset.slug, botao);
@@ -295,6 +306,10 @@ function criarCard(produto) {
     .map((loja) => `<a href="${loja.url(produto.nome)}" target="_blank" rel="noopener">${loja.nome}</a>`)
     .join(" · ");
 
+  const seloHistorico = ehMenorPreco30Dias(produto)
+    ? '<span class="selo selo-historico">📉 Menor preço em 30 dias</span>'
+    : "";
+
   const selo = produto.economia > 0
     ? `<span class="selo">Economize ${formatarPreco(produto.economia)}</span>`
     : "";
@@ -326,6 +341,7 @@ function criarCard(produto) {
       <p class="preco">${formatarPreco(produto.melhor.preco)}</p>
       <p class="na-loja">na <strong>${escapar(produto.melhor.loja)}</strong> ${produto.melhor.precoNormal ? "(no PIX)" : ""}</p>
       ${selo}
+      ${seloHistorico}
 
       ${linhaFps(produto)}
 
@@ -335,6 +351,7 @@ function criarCard(produto) {
         <summary>Comparar lojas (${produto.ofertas.length})</summary>
         <ul>${linhasOfertas}</ul>
         <p class="outras-lojas">Procurar também na ${linksOutras}</p>
+        ${dadosDoBanco ? `<div class="historico" data-slug="${escapar(produto.slug)}"></div>` : ""}
       </details>
     </article>`;
 }
@@ -442,7 +459,7 @@ async function iniciar() {
   listaProdutos.innerHTML = '<p class="vazio">Carregando produtos...</p>';
 
   await carregarUsuario();
-  await Promise.all([usuario ? carregarCadastro() : null, carregarProdutos()]);
+  await Promise.all([usuario ? carregarCadastro() : null, carregarProdutos(), carregarResumoHistorico()]);
   if (usuario) await carregarFavoritos();
 
   // O filtro de favoritos só aparece para quem está logado (e com os produtos do banco)

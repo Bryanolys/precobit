@@ -1,0 +1,33 @@
+# Atualiza os preços todo dia, sem precisar do computador ligado.
+# Roda o scripts/atualizar-precos.js, que busca na KaBuM e na Amazon e grava no Supabase
+# (produtos, ofertas e histórico de preços).
+#
+# Precisa de dois "secrets" no GitHub (Settings > Secrets and variables > Actions):
+#   SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (os mesmos valores do arquivo .env)
+
+name: Atualizar preços
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # todo dia às 9h UTC = 6h em Brasília
+  workflow_dispatch:       # botão "Run workflow" para rodar na hora
+
+permissions:
+  contents: read
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Buscar preços e gravar no Supabase
+        run: node scripts/atualizar-precos.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

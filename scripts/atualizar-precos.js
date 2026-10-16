@@ -509,6 +509,24 @@ async function bancoTemColunasDeRanking() {
   }
 }
 
+// Histórico: um preço por produto, loja e dia (rodar duas vezes no mesmo dia só atualiza).
+// A tabela vem do supabase/migracao-003-historico-precos.sql; sem ela, o resto continua funcionando.
+async function gravarHistorico(produtos, atualizadoEm) {
+  // Dia no horário de Brasília (en-CA formata como AAAA-MM-DD)
+  const dia = new Date(atualizadoEm).toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
+  try {
+    await chamarSupabase("POST", "historico_precos?on_conflict=produto_slug,loja,dia", produtos.flatMap((p) =>
+      p.ofertas.map((o) => ({ produto_slug: p.slug, loja: o.loja, dia: dia, preco: o.preco }))));
+    console.log("Histórico de preços de " + dia + " gravado.");
+  } catch (erro) {
+    if (erro.status === 404) {
+      console.log("Aviso: rode o supabase/migracao-003-historico-precos.sql no Supabase para guardar o histórico de preços.");
+    } else {
+      throw erro;
+    }
+  }
+}
+
 async function enviarParaSupabase(produtos, atualizadoEm) {
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     console.log("Supabase não configurado (.env), então nada foi enviado ao banco.");
@@ -544,12 +562,17 @@ async function enviarParaSupabase(produtos, atualizadoEm) {
     atualizado_em: atualizadoEm
   }))));
 
+  await gravarHistorico(produtos, atualizadoEm);
+
   // Ofertas de uma loja que não tem mais o produto saem do banco
   const lojasNovas = new Set(produtos.flatMap((p) => p.ofertas.map((o) => p.slug + "|" + o.loja)));
   const slugsNovos = new Set(produtos.map((p) => p.slug));
   const ofertasNoBanco = (await chamarSupabase("GET", "ofertas?select=id,produto_slug,loja")) || [];
+  // Se uma loja não devolveu nada hoje (fora do ar ou bloqueou a busca), as ofertas dela ficam
+  const lojasQueResponderam = new Set(produtos.flatMap((p) => p.ofertas.map((o) => o.loja)));
   const ofertasVelhas = ofertasNoBanco
-    .filter((o) => slugsNovos.has(o.produto_slug) && !lojasNovas.has(o.produto_slug + "|" + o.loja))
+    .filter((o) => slugsNovos.has(o.produto_slug) && lojasQueResponderam.has(o.loja) &&
+      !lojasNovas.has(o.produto_slug + "|" + o.loja))
     .map((o) => o.id);
   if (ofertasVelhas.length > 0) {
     await chamarSupabase("DELETE", "ofertas?id=in.(" + ofertasVelhas.join(",") + ")");
