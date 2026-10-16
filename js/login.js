@@ -28,10 +28,7 @@ const MODOS = {
   }
 };
 
-const blocoSocial = document.getElementById("bloco-social");
-
 let modoAtual = "entrar";
-let temLoginSocial = false; // vira true se algum botão social estiver ligado no Supabase
 
 function mudarModo(modo) {
   modoAtual = modo;
@@ -44,7 +41,6 @@ function mudarModo(modo) {
   campoNome.hidden = modo !== "criar";
   campoSenha.hidden = modo === "recuperar";
   linkEsqueci.hidden = modo !== "entrar";
-  blocoSocial.hidden = modo === "recuperar" || !temLoginSocial;
   document.getElementById("senha").autocomplete = modo === "criar" ? "new-password" : "current-password";
 
   mostrarMensagem("");
@@ -59,60 +55,6 @@ botaoMostrarSenha.addEventListener("click", function () {
   campoSenhaInput.type = mostrando ? "password" : "text";
   botaoMostrarSenha.setAttribute("aria-pressed", String(!mostrando));
   botaoMostrarSenha.setAttribute("aria-label", mostrando ? "Mostrar senha" : "Esconder senha");
-});
-
-// Entrar com Google / GitHub / Facebook
-const NOMES_PROVEDORES = { google: "Google", github: "GitHub", facebook: "Facebook" };
-
-// Lê no Supabase quais logins estão ligados (null se não conseguir ler)
-async function lerProvedores() {
-  try {
-    const resposta = await fetch(SUPABASE_URL + "/auth/v1/settings", { headers: { apikey: SUPABASE_ANON_KEY } });
-    return (await resposta.json()).external || null;
-  } catch (erro) {
-    return null;
-  }
-}
-
-async function provedorAtivo(provedor) {
-  const provedores = await lerProvedores();
-  return provedores ? Boolean(provedores[provedor]) : true; // na dúvida, deixa o Supabase responder
-}
-
-// Mostra só os botões sociais que estão ligados no Supabase (Authentication > Providers)
-async function mostrarBotoesSociais() {
-  if (!SUPABASE_CONFIGURADO) return;
-  const provedores = await lerProvedores();
-  if (!provedores) return; // sem resposta: deixa os botões escondidos
-
-  document.querySelectorAll(".botao-social").forEach(function (botao) {
-    botao.hidden = !provedores[botao.dataset.provedor];
-  });
-  temLoginSocial = document.querySelector(".botao-social:not([hidden])") !== null;
-  blocoSocial.hidden = modoAtual === "recuperar" || !temLoginSocial;
-}
-
-document.querySelectorAll(".botao-social").forEach(function (botao) {
-  botao.addEventListener("click", async function () {
-    if (!SUPABASE_CONFIGURADO) return mostrarMensagem("Configure o Supabase em js/supabase-config.js.");
-
-    const provedor = botao.dataset.provedor;
-    botao.disabled = true;
-
-    if (!(await provedorAtivo(provedor))) {
-      botao.disabled = false;
-      return mostrarMensagem("Entrar com " + NOMES_PROVEDORES[provedor] + " ainda não está disponível. Use e-mail e senha.");
-    }
-
-    const { error } = await supabaseClient.auth.signInWithOAuth({
-      provider: provedor,
-      options: { redirectTo: new URL("home.html", window.location.href).href }
-    });
-
-    botao.disabled = false;
-    if (error) mostrarMensagem(traduzirErro(error));
-    // Sem erro, o navegador vai para a página do Google/GitHub/Facebook
-  });
 });
 
 function mostrarMensagem(texto, tipo = "erro") {
@@ -239,4 +181,3 @@ async function verificarSessao() {
 
 mudarModo("entrar");
 verificarSessao();
-mostrarBotoesSociais();

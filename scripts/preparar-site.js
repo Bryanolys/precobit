@@ -42,6 +42,12 @@ fs.writeFileSync(
     "  X-Content-Type-Options: nosniff",
     "  Referrer-Policy: strict-origin-when-cross-origin",
     "  Permissions-Policy: camera=(), microphone=(), geolocation=()",
+    // De onde o site pode carregar coisas: dele mesmo, da biblioteca do Supabase (jsDelivr)
+    // e só pode conversar com o próprio banco. Formulários só enviam para o próprio site.
+    "  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+      "style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; " +
+      "connect-src 'self' https://bwthjqlqihncngikojmu.supabase.co; " +
+      "frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests",
     ""
   ].join("\n")
 );

@@ -3203,3 +3203,19 @@ a.botao-sair {
     background: rgba(14, 19, 40, 0.95);
   }
 }
+
+/* Aviso de segurança no login */
+.aviso-seguranca {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(21, 101, 216, 0.07);
+  color: #3a4a66;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+[data-tema="gamer"] .aviso-seguranca {
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--gamer-texto-2);
+}
