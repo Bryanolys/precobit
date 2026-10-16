@@ -3,83 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b3a9a">
+  <meta name="theme-color" content="#0b2a6f">
   <title>PreçoBit - Entrar</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/tema.js"></script>
 </head>
-<body class="pagina-login">
+<body class="pagina-home pagina-acesso">
 
-  <!-- Formas 3D flutuando no fundo (só decoração) -->
-  <div class="cena" aria-hidden="true">
-    <div class="painel-fundo"></div>
-    <img class="forma forma-anel" src="../img/formas/anel.svg" alt="">
-    <img class="forma forma-zigue" src="../img/formas/zigue.svg" alt="">
-    <img class="forma forma-zigue-2" src="../img/formas/zigue.svg" alt="">
-    <img class="forma forma-espiral" src="../img/formas/espiral.svg" alt="">
-    <img class="forma forma-laco" src="../img/formas/laco.svg" alt="">
-    <img class="forma forma-laco-2" src="../img/formas/laco.svg" alt="">
-    <img class="forma forma-onda" src="../img/formas/onda.svg" alt="">
-    <img class="forma forma-onda-2" src="../img/formas/onda.svg" alt="">
-    <img class="forma forma-onda-grossa" src="../img/formas/onda-grossa.svg" alt="">
-    <img class="forma forma-placa" src="../img/placa-mae-3d.svg" alt="">
+  <div class="fundo-cores">
+    <span></span><span></span><span></span>
   </div>
 
-  <main class="cartao-login">
-    <div class="marca marca-login">
-      <span class="marca-icone"></span>
-      PREÇOBIT
+  <header class="topo vidro">
+    <div class="topo-esquerda">
+      <a href="home.html" class="marca marca-link">
+        <span class="marca-icone"></span>
+        PREÇOBIT
+      </a>
     </div>
+    <div class="topo-direita">
+      <button type="button" class="botao-sair botao-tema" aria-pressed="false" title="Ligar o modo gamer"><span>🎮</span></button>
+      <a href="home.html" class="botao-sair">← Ver preços</a>
+    </div>
+  </header>
 
-    <h1 id="titulo-painel">Entrar</h1>
+  <main class="acesso">
 
-    <form id="form-login" novalidate>
-      <div id="campo-nome" class="campo" hidden>
-        <label for="nome">Nome</label>
-        <input type="text" id="nome" placeholder="Como quer ser chamado" autocomplete="name">
-      </div>
+    <!-- Lado esquerdo: o que a conta libera, com uma prévia do Monte seu PC -->
+    <section class="acesso-vitrine">
+      <p class="acesso-etiqueta"><span class="ponto-vivo"></span> Preços atualizados todo dia</p>
+      <p class="acesso-titulo">Sua central de <span>hardware</span></p>
+      <p class="acesso-texto">Compare KaBuM e Amazon, monte seu PC e descubra quantos FPS ele roda.</p>
 
-      <div class="campo">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="seuemail@gmail.com" autocomplete="email">
-      </div>
+      <ul class="acesso-vantagens">
+        <li><span>♥</span> Favoritos salvos em qualquer aparelho</li>
+        <li><span>🛠️</span> Monte seu PC com checagem de compatibilidade</li>
+        <li><span>📉</span> Histórico e menor preço em 30 dias</li>
+      </ul>
 
-      <div id="campo-senha" class="campo">
-        <label for="senha">Senha</label>
-        <div class="campo-senha">
-          <input type="password" id="senha" placeholder="Sua senha" autocomplete="current-password">
-          <button type="button" id="mostrar-senha" class="mostrar-senha" aria-label="Mostrar senha" aria-pressed="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+      <!-- Prévia ilustrativa (decoração) -->
+      <div class="acesso-demo" aria-hidden="true">
+        <div class="demo-topo">
+          <span class="demo-tag">PC gamer 1080p</span>
+          <span class="demo-ok">✓ Compatível</span>
         </div>
+        <p class="demo-pecas">Ryzen 5 5600 · RTX 5060 · 16 GB DDR4</p>
+        <div class="demo-barras">
+          <div><span>Valorant</span><i style="--v: 0.95"></i><b>400+</b></div>
+          <div><span>CS2</span><i style="--v: 0.8"></i><b>260</b></div>
+          <div><span>Fortnite</span><i style="--v: 0.6"></i><b>135</b></div>
+          <div><span>Cyberpunk</span><i style="--v: 0.38"></i><b>78</b></div>
+        </div>
+        <p class="demo-legenda">FPS estimado · 1080p</p>
       </div>
+    </section>
 
-      <a href="#" id="link-esqueci" class="link-esqueci" data-modo="recuperar">Esqueceu a senha?</a>
+    <!-- Lado direito: formulário -->
+    <section class="painel-acesso vidro" aria-labelledby="titulo-painel">
+      <h1 id="titulo-painel">Entrar</h1>
+      <p class="painel-sub">Ver os preços é livre. A conta guarda seus favoritos e seu cadastro.</p>
 
-      <p id="mensagem-erro" class="erro" role="alert"></p>
+        <form id="form-login" novalidate>
+          <div id="campo-nome" class="campo" hidden>
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" placeholder="Como quer ser chamado" autocomplete="name">
+          </div>
 
-      <button type="submit" id="botao-enviar" class="botao-entrar">Entrar</button>
-    </form>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="seuemail@gmail.com" autocomplete="email">
+          </div>
 
-    <div id="bloco-social">
-      <p class="divisor"><span>ou continue com</span></p>
+          <div id="campo-senha" class="campo">
+            <label for="senha">Senha</label>
+            <div class="campo-senha">
+              <input type="password" id="senha" placeholder="Sua senha" autocomplete="current-password">
+              <button type="button" id="mostrar-senha" class="mostrar-senha" aria-label="Mostrar senha" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
 
-      <div class="botoes-sociais">
-        <button type="button" class="botao-social" data-provedor="google" aria-label="Entrar com Google">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h6c-.3 1.4-1 2.5-2.2 3.3v2.8h3.6c2-1.9 3.2-4.7 3.2-8.1Z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.4-2.7l-3.6-2.8c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2v2.9A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.7 14c-.2-.7-.4-1.4-.4-2s.1-1.4.4-2V7.1H2A11 11 0 0 0 1 12c0 1.8.4 3.4 1.2 4.9L5.7 14Z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2 7.1L5.7 10c.9-2.7 3.4-4.6 6.3-4.6Z"/></svg>
-        </button>
-        <button type="button" class="botao-social" data-provedor="github" aria-label="Entrar com GitHub">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#181717" d="M12 .5A11.5 11.5 0 0 0 8.4 23c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>
-        </button>
-        <button type="button" class="botao-social" data-provedor="facebook" aria-label="Entrar com Facebook">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path fill="#fff" d="M13.4 23v-8.3h2.8l.4-3.3h-3.2V9.3c0-.9.3-1.6 1.6-1.6h1.7V4.8a22 22 0 0 0-2.5-.1c-2.5 0-4.1 1.5-4.1 4.2v2.5H7.3v3.3h2.8V23h3.3Z"/></svg>
-        </button>
-      </div>
-    </div>
+          <a href="#" id="link-esqueci" class="link-esqueci" data-modo="recuperar">Esqueceu a senha?</a>
 
-    <p id="troca-modo" class="rodape-login"></p>
+          <p id="mensagem-erro" class="erro" role="alert"></p>
+
+          <button type="submit" id="botao-enviar" class="botao-entrar">Entrar</button>
+        </form>
+
+        <div id="bloco-social">
+          <p class="divisor"><span>ou continue com</span></p>
+
+          <div class="botoes-sociais">
+            <button type="button" class="botao-social" data-provedor="google" aria-label="Entrar com Google">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h6c-.3 1.4-1 2.5-2.2 3.3v2.8h3.6c2-1.9 3.2-4.7 3.2-8.1Z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.4-2.7l-3.6-2.8c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2v2.9A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.7 14c-.2-.7-.4-1.4-.4-2s.1-1.4.4-2V7.1H2A11 11 0 0 0 1 12c0 1.8.4 3.4 1.2 4.9L5.7 14Z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2 7.1L5.7 10c.9-2.7 3.4-4.6 6.3-4.6Z"/></svg>
+            </button>
+            <button type="button" class="botao-social" data-provedor="github" aria-label="Entrar com GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#181717" d="M12 .5A11.5 11.5 0 0 0 8.4 23c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>
+            </button>
+            <button type="button" class="botao-social" data-provedor="facebook" aria-label="Entrar com Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path fill="#fff" d="M13.4 23v-8.3h2.8l.4-3.3h-3.2V9.3c0-.9.3-1.6 1.6-1.6h1.7V4.8a22 22 0 0 0-2.5-.1c-2.5 0-4.1 1.5-4.1 4.2v2.5H7.3v3.3h2.8V23h3.3Z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <p id="troca-modo" class="rodape-login"></p>
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -2625,3 +2625,470 @@ a.botao-sair {
 [data-tema="gamer"] .grafico-dica strong {
   color: #070b18;
 }
+
+/* =====================================================================
+   Tela de acesso (login e nova senha) no estilo da home
+   ===================================================================== */
+
+.marca-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.acesso {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 420px);
+  gap: 28px;
+  align-items: center;
+  max-width: 1100px;
+  min-height: calc(100vh - 56px);
+  min-height: calc(100dvh - 56px);
+  margin: 0 auto;
+  padding: 36px 16px 48px;
+}
+
+.acesso-simples {
+  grid-template-columns: minmax(0, 440px);
+  justify-content: center;
+}
+
+/* ---------- Vitrine (lado esquerdo) ---------- */
+.acesso-vitrine {
+  position: relative;
+  overflow: hidden;
+  padding: 40px;
+  border-radius: 28px;
+  color: white;
+  background: linear-gradient(135deg, #0b2a6f, #1565d8 55%, #2aa8f2);
+  box-shadow: 0 24px 60px rgba(11, 42, 111, 0.3);
+}
+
+/* Grade "tech" e um brilho no canto */
+.acesso-vitrine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+}
+
+.acesso-vitrine::after {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: -120px;
+  top: -140px;
+  border-radius: 50%;
+  background: #7c3aed;
+  filter: blur(80px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.acesso-vitrine > * {
+  position: relative;
+  z-index: 1;
+}
+
+.acesso-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Bolinha verde "ao vivo" */
+.ponto-vivo {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+  animation: pulsar 2s infinite;
+}
+
+@keyframes pulsar {
+  70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.acesso-titulo {
+  margin-top: 22px;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.8px;
+}
+
+.acesso-titulo span {
+  color: #7fd8ff;
+}
+
+.acesso-texto {
+  margin-top: 12px;
+  max-width: 440px;
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.88;
+}
+
+.acesso-vantagens {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+
+.acesso-vantagens li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.acesso-vantagens li span {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* Prévia do Monte seu PC */
+.acesso-demo {
+  max-width: 420px;
+  margin-top: 28px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 40px rgba(3, 18, 56, 0.3);
+}
+
+.demo-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-tag,
+.demo-ok {
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.demo-tag {
+  background: linear-gradient(135deg, #7c3aed, #2aa8f2);
+}
+
+.demo-ok {
+  background: rgba(74, 222, 128, 0.2);
+  color: #bbf7d0;
+}
+
+.demo-pecas {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.demo-barras {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.demo-barras div {
+  display: grid;
+  grid-template-columns: 76px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.demo-barras span {
+  opacity: 0.85;
+}
+
+.demo-barras b {
+  text-align: right;
+}
+
+/* Trilho + barra que enche */
+.demo-barras i {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.demo-barras i::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--v) * 100%);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #7fd8ff, #ffffff);
+  animation: encher 1.4s ease-out both;
+}
+
+.demo-barras div:nth-child(2) i::after { animation-delay: 0.15s; }
+.demo-barras div:nth-child(3) i::after { animation-delay: 0.3s; }
+.demo-barras div:nth-child(4) i::after { animation-delay: 0.45s; }
+
+@keyframes encher {
+  from { width: 0; }
+}
+
+.demo-legenda {
+  margin-top: 10px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ponto-vivo,
+  .demo-barras i::after {
+    animation: none;
+  }
+}
+
+/* ---------- Painel do formulário ---------- */
+.painel-acesso {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(21, 101, 216, 0.15);
+  color: #1c2b45;
+}
+
+.painel-acesso h1 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+.painel-sub {
+  margin: 6px 0 20px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #5a6b85;
+}
+
+.painel-acesso .campo {
+  margin-bottom: 14px;
+}
+
+.painel-acesso .campo label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #24406b;
+}
+
+.painel-acesso .campo input {
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(21, 101, 216, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #1c2b45;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.painel-acesso .campo input:focus {
+  border-color: #2aa8f2;
+  box-shadow: 0 0 0 4px rgba(42, 168, 242, 0.18);
+}
+
+.painel-acesso .campo-senha input {
+  padding-right: 48px;
+}
+
+.painel-acesso .mostrar-senha {
+  width: 46px;
+  height: 46px;
+}
+
+.painel-acesso .link-esqueci {
+  color: #1565d8;
+  font-size: 13px;
+  opacity: 1;
+}
+
+.painel-acesso .erro {
+  color: #c8283c;
+  font-size: 13px;
+}
+
+.painel-acesso .erro.sucesso {
+  color: #1a7f45;
+}
+
+.painel-acesso .botao-entrar {
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1565d8, #2aa8f2);
+  font-size: 15px;
+}
+
+.painel-acesso .botao-entrar:hover {
+  background: linear-gradient(135deg, #1565d8, #2aa8f2);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 22px rgba(42, 168, 242, 0.45);
+}
+
+.painel-acesso .divisor {
+  color: #5a6b85;
+}
+
+.painel-acesso .botao-social {
+  height: 44px;
+  border: 1px solid rgba(21, 101, 216, 0.15);
+  border-radius: 12px;
+}
+
+.painel-acesso .rodape-login {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #5a6b85;
+  opacity: 1;
+}
+
+.painel-acesso .rodape-login a {
+  color: #1565d8;
+}
+
+/* ---------- Celular e tablet: formulário primeiro ---------- */
+@media (max-width: 860px) {
+  .acesso {
+    grid-template-columns: 1fr;
+    align-items: start;
+    min-height: 0;
+    padding: 20px 12px 36px;
+  }
+
+  .painel-acesso {
+    order: -1;
+    padding: 24px 20px;
+  }
+
+  .acesso-vitrine {
+    padding: 28px 22px;
+    border-radius: 22px;
+  }
+
+  .acesso-titulo {
+    font-size: 30px;
+  }
+
+  .acesso-demo {
+    max-width: none;
+  }
+}
+
+/* ---------- Modo gamer ---------- */
+[data-tema="gamer"] .acesso-vitrine {
+  background: linear-gradient(135deg, #0a0f24, #1e1b4b 55%, #4c1d95);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.35), 0 24px 60px rgba(76, 29, 149, 0.4);
+}
+
+[data-tema="gamer"] .acesso-vitrine::after {
+  background: #06b6d4;
+  opacity: 0.3;
+}
+
+[data-tema="gamer"] .acesso-titulo span {
+  color: #22d3ee;
+}
+
+[data-tema="gamer"] .demo-barras i::after {
+  background: linear-gradient(90deg, #8b5cf6, #22d3ee);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+}
+
+[data-tema="gamer"] .painel-acesso {
+  color: var(--gamer-texto);
+}
+
+[data-tema="gamer"] .painel-sub,
+[data-tema="gamer"] .painel-acesso .divisor,
+[data-tema="gamer"] .painel-acesso .rodape-login {
+  color: var(--gamer-texto-2);
+}
+
+[data-tema="gamer"] .painel-acesso .campo label {
+  color: #c4b5fd;
+}
+
+[data-tema="gamer"] .painel-acesso .campo input {
+  background: #0f1630;
+  border-color: var(--gamer-borda);
+  color: var(--gamer-texto);
+}
+
+[data-tema="gamer"] .painel-acesso .campo input::placeholder {
+  color: #6b7aa0;
+}
+
+[data-tema="gamer"] .painel-acesso .campo input:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.25);
+}
+
+[data-tema="gamer"] .painel-acesso .botao-entrar,
+[data-tema="gamer"] .painel-acesso .botao-entrar:hover {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+}
+
+[data-tema="gamer"] .painel-acesso .botao-entrar:hover {
+  box-shadow: 0 0 22px rgba(139, 92, 246, 0.55);
+}
+
+[data-tema="gamer"] .painel-acesso .link-esqueci,
+[data-tema="gamer"] .painel-acesso .rodape-login a {
+  color: var(--gamer-ciano);
+}
+
+[data-tema="gamer"] .painel-acesso .erro {
+  color: #fca5a5;
+}
+
+[data-tema="gamer"] .painel-acesso .erro.sucesso {
+  color: #86efac;
+}
+
+/* Na tela de acesso o topo não fica sobre a faixa azul: usa o azul cheio */
+.pagina-acesso .topo.vidro {
+  background: linear-gradient(90deg, #0b2a6f, #1565d8);
+}
+
+[data-tema="gamer"] .pagina-acesso .topo.vidro {
+  background: rgba(7, 11, 24, 0.85);
+}
