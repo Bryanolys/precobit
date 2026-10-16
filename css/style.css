@@ -2344,3 +2344,284 @@ a.botao-sair {
     max-height: calc(100% - 32px);
   }
 }
+
+/* =====================================================================
+   Modo gamer: tema escuro com neon roxo e ciano.
+   Ligado pelo botão 🎮 no topo (js/tema.js coloca data-tema="gamer" no <html>).
+   ===================================================================== */
+
+.botao-tema {
+  min-width: 38px;
+  padding: 6px 10px;
+  font-size: 15px;
+  line-height: 1;
+}
+
+[data-tema="gamer"] {
+  color-scheme: dark;
+  --gamer-fundo: #070b18;
+  --gamer-superficie: rgba(17, 24, 48, 0.62);
+  --gamer-borda: rgba(124, 58, 237, 0.28);
+  --gamer-texto: #e6ecff;
+  --gamer-texto-2: #a3b0cf;
+  --gamer-roxo: #8b5cf6;
+  --gamer-ciano: #22d3ee;
+}
+
+[data-tema="gamer"] .pagina-home {
+  background: var(--gamer-fundo);
+  color: var(--gamer-texto);
+}
+
+[data-tema="gamer"] .fundo-cores span { opacity: 0.32; }
+[data-tema="gamer"] .fundo-cores span:nth-child(1) { background: #7c3aed; }
+[data-tema="gamer"] .fundo-cores span:nth-child(2) { background: #06b6d4; }
+[data-tema="gamer"] .fundo-cores span:nth-child(3) { background: #db2777; }
+
+/* Topo e destaque */
+[data-tema="gamer"] .topo.vidro {
+  background: rgba(7, 11, 24, 0.75);
+  border-bottom-color: var(--gamer-borda);
+}
+
+[data-tema="gamer"] .hero {
+  background: linear-gradient(135deg, #0a0f24, #1e1b4b 55%, #4c1d95);
+}
+
+[data-tema="gamer"] .hero h1 span,
+[data-tema="gamer"] .marca-icone {
+  color: var(--gamer-ciano);
+}
+
+[data-tema="gamer"] .marca-icone {
+  background: var(--gamer-ciano);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.7);
+}
+
+[data-tema="gamer"] .busca {
+  background: rgba(139, 92, 246, 0.14);
+  border-color: rgba(139, 92, 246, 0.45);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.25);
+}
+
+[data-tema="gamer"] .busca input {
+  background: rgba(10, 15, 36, 0.9);
+  color: var(--gamer-texto);
+}
+
+/* Superfícies de vidro */
+[data-tema="gamer"] .vidro,
+[data-tema="gamer"] .produto,
+[data-tema="gamer"] .peca,
+[data-tema="gamer"] .pc-pronto,
+[data-tema="gamer"] .menu-secao {
+  background: var(--gamer-superficie);
+  border-color: var(--gamer-borda);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+[data-tema="gamer"] .peca.vazia {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+[data-tema="gamer"] .peca.com-erro {
+  border-color: rgba(248, 113, 113, 0.6);
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.15);
+}
+
+@media (hover: hover) {
+  [data-tema="gamer"] .produto:hover,
+  [data-tema="gamer"] .pc-pronto:hover {
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.55), 0 16px 40px rgba(124, 58, 237, 0.3);
+  }
+}
+
+[data-tema="gamer"] .menu-lateral {
+  background: rgba(10, 14, 32, 0.9);
+  border-right-color: var(--gamer-borda);
+}
+
+[data-tema="gamer"] .janela-escolha {
+  background: rgba(12, 16, 36, 0.96);
+  border-color: var(--gamer-borda);
+  color: var(--gamer-texto);
+}
+
+/* Texto secundário */
+[data-tema="gamer"] .rotulo-preco,
+[data-tema="gamer"] .na-loja,
+[data-tema="gamer"] .contador,
+[data-tema="gamer"] .ordenar,
+[data-tema="gamer"] .aviso,
+[data-tema="gamer"] .vazio,
+[data-tema="gamer"] .outras-lojas,
+[data-tema="gamer"] .peca-tipo,
+[data-tema="gamer"] .peca-opcional,
+[data-tema="gamer"] .pronto-jogos,
+[data-tema="gamer"] .consumo span,
+[data-tema="gamer"] .titulo-checagem,
+[data-tema="gamer"] .tabela-fps thead th,
+[data-tema="gamer"] .desempenho-vazio,
+[data-tema="gamer"] .desempenho-nota,
+[data-tema="gamer"] .historico-texto,
+[data-tema="gamer"] .grafico-data,
+[data-tema="gamer"] .fps-card span,
+[data-tema="gamer"] .opcao-preco small,
+[data-tema="gamer"] .perfil-email,
+[data-tema="gamer"] .rotulo-menu,
+[data-tema="gamer"] .peca.vazia .peca-info > strong {
+  color: var(--gamer-texto-2);
+}
+
+[data-tema="gamer"] .caixa,
+[data-tema="gamer"] .menu-texto,
+[data-tema="gamer"] .menu-cabecalho,
+[data-tema="gamer"] .menu-secao summary,
+[data-tema="gamer"] .convite-conta,
+[data-tema="gamer"] .pronto-pecas,
+[data-tema="gamer"] .historico-titulo,
+[data-tema="gamer"] .grafico-rotulo-fim,
+[data-tema="gamer"] .oferta {
+  color: var(--gamer-texto);
+}
+
+/* Preços e links em ciano */
+[data-tema="gamer"] .preco,
+[data-tema="gamer"] .pronto-preco,
+[data-tema="gamer"] .opcao-preco {
+  color: var(--gamer-ciano);
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
+}
+
+[data-tema="gamer"] .produto summary,
+[data-tema="gamer"] .outras-lojas a,
+[data-tema="gamer"] .menu-links a,
+[data-tema="gamer"] .botao-ver,
+[data-tema="gamer"] .botao-escolher.secundario,
+[data-tema="gamer"] .botao-menu-secundario {
+  color: var(--gamer-ciano);
+}
+
+/* Botões principais em degradê roxo -> ciano */
+[data-tema="gamer"] .botao-oferta,
+[data-tema="gamer"] .botao-escolher:not(.secundario),
+[data-tema="gamer"] .busca button,
+[data-tema="gamer"] .botao-menu-acao,
+[data-tema="gamer"] .avatar {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+}
+
+[data-tema="gamer"] .botao-oferta:hover {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.55);
+}
+
+[data-tema="gamer"] .botao-escolher.secundario,
+[data-tema="gamer"] .botao-menu-secundario,
+[data-tema="gamer"] .fechar-menu {
+  background: rgba(139, 92, 246, 0.16);
+}
+
+[data-tema="gamer"] .fechar-menu {
+  color: var(--gamer-texto);
+}
+
+/* Categorias */
+[data-tema="gamer"] .chip {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(139, 92, 246, 0.35);
+  color: #c4b5fd;
+}
+
+[data-tema="gamer"] .chip:hover {
+  background: rgba(139, 92, 246, 0.15);
+}
+
+[data-tema="gamer"] .chip.ativo {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: white;
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.6);
+}
+
+/* Campos */
+[data-tema="gamer"] .ordenar select,
+[data-tema="gamer"] .form-menu input,
+[data-tema="gamer"] .busca-escolha {
+  background: #0f1630;
+  border-color: var(--gamer-borda);
+  color: var(--gamer-texto);
+}
+
+/* Selos e destaques */
+[data-tema="gamer"] .selo {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+}
+
+[data-tema="gamer"] .selo-historico {
+  background: rgba(196, 181, 253, 0.12);
+  color: #c4b5fd;
+}
+
+[data-tema="gamer"] .fps-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.16));
+  color: #ddd6fe;
+}
+
+[data-tema="gamer"] .oferta:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-tema="gamer"] .oferta.melhor {
+  background: rgba(139, 92, 246, 0.2);
+  color: white;
+}
+
+[data-tema="gamer"] .produto details,
+[data-tema="gamer"] .tabela-fps th,
+[data-tema="gamer"] .tabela-fps td {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-tema="gamer"] .consumo div {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Avisos de compatibilidade e níveis de FPS: tons claros para ler no escuro */
+[data-tema="gamer"] .checagem-ok    { background: rgba(74, 222, 128, 0.1);  color: #86efac; }
+[data-tema="gamer"] .checagem-aviso { background: rgba(251, 191, 36, 0.1);  color: #fcd34d; }
+[data-tema="gamer"] .checagem-erro  { background: rgba(248, 113, 113, 0.12); color: #fca5a5; }
+[data-tema="gamer"] .checagem-info  { background: rgba(96, 165, 250, 0.1);  color: #bfdbfe; }
+[data-tema="gamer"] .opcao-erro  { color: #fca5a5; }
+[data-tema="gamer"] .opcao-aviso { color: #fcd34d; }
+
+[data-tema="gamer"] .nivel-top   { background: rgba(196, 181, 253, 0.16); color: #ddd6fe; }
+[data-tema="gamer"] .nivel-bom   { background: rgba(74, 222, 128, 0.14);  color: #86efac; }
+[data-tema="gamer"] .nivel-ok    { background: rgba(251, 191, 36, 0.14);  color: #fcd34d; }
+[data-tema="gamer"] .nivel-fraco { background: rgba(248, 113, 113, 0.14); color: #fca5a5; }
+
+/* Janela de escolha */
+[data-tema="gamer"] .opcao:hover { background: rgba(255, 255, 255, 0.06); }
+[data-tema="gamer"] .opcao.atual { background: rgba(139, 92, 246, 0.2); }
+[data-tema="gamer"] .opcao-remover { color: #fca5a5; }
+
+/* Gráfico do histórico */
+[data-tema="gamer"] .historico {
+  --grafico-linha: #22d3ee;
+  --grafico-superficie: #111830;
+  --grafico-eixo: rgba(255, 255, 255, 0.14);
+}
+
+[data-tema="gamer"] .grafico-mira {
+  stroke: var(--gamer-texto-2);
+}
+
+[data-tema="gamer"] .grafico-dica {
+  background: #e6ecff;
+  color: #24406b;
+}
+
+[data-tema="gamer"] .grafico-dica strong {
+  color: #070b18;
+}
