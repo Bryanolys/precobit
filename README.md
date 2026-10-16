@@ -2,7 +2,7 @@
 
 Comparador de preços de hardware (processadores, placas de vídeo, placas-mãe, memória RAM, SSDs e fontes) com preços reais da KaBuM e da Amazon.
 
-**Site no ar:** https://joyful-capybara-d345ff.netlify.app
+**Site no ar:** https://precobit.netlify.app
 
 ## Funcionalidades
 
