@@ -6,9 +6,16 @@ Comparador de preços de hardware (processadores, placas de vídeo, placas-mãe,
 
 ## Funcionalidades
 
-- Login, cadastro e recuperação de senha (Supabase Auth), com tela em efeito de vidro
-- Busca, filtros por categoria e favoritos
-- Ranking dos produtos mais vendidos e mais procurados
+- Busca, filtros por categoria e ranking dos mais vendidos, abertos para qualquer visitante
+- **Monte seu PC**: escolha as peças e veja o total pelo menor preço e se elas combinam
+  (soquete, DDR4/DDR5, potência da fonte, vídeo integrado)
+- **PCs prontos** (estudo, entrada, 1080p, 1440p e topo de linha) montados com o preço do dia
+- **FPS estimado** em Valorant, CS2, Fortnite, GTA V e Cyberpunk, e custo por FPS das placas de vídeo
+- **Histórico de preços** com gráfico de 30 dias e selo "Menor preço em 30 dias"
+- Compartilhar a montagem (link, WhatsApp) com card de preview
+- **Modo gamer** (tema escuro com neon)
+- Conta (Supabase Auth) para favoritos e cadastro
+- Preços atualizados todo dia por um GitHub Action
 - Layout adaptado para celular
 
 ## Tecnologias
@@ -21,13 +28,14 @@ Comparador de preços de hardware (processadores, placas de vídeo, placas-mãe,
 ## Estrutura
 
 ```
-index.html          tela de login
-pages/              home e página de nova senha
+index.html          abre a lista de preços (e o card de compartilhamento)
+pages/              home, Monte seu PC, login (entrar.html) e nova senha
 css/                estilos
-js/                 lógica do site (login, home, produtos, config do Supabase)
+js/                 lógica do site (home, Monte seu PC, desempenho, histórico, tema, login)
 img/                ícones, formas e fotos dos produtos
 scripts/            servidor local, atualização de preços e preparação para publicar
-supabase/           SQL das tabelas do banco
+supabase/           SQL das tabelas do banco (schema.sql + migrações)
+.github/workflows/  atualização diária dos preços
 ```
 
 ## Como rodar localmente
