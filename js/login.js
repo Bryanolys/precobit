@@ -30,6 +30,13 @@ const MODOS = {
 
 let modoAtual = "entrar";
 
+// Para onde ir depois de entrar: a página que pediu o login (?voltar=...) ou a home.
+// Só aceita páginas do próprio site, para ninguém usar o link para mandar a pessoa a outro endereço.
+function destinoDepoisDoLogin() {
+  const voltar = new URLSearchParams(window.location.search).get("voltar") || "";
+  return /^(home|montar-pc)\.html(\?[^#]*)?$/.test(voltar) ? voltar : "home.html";
+}
+
 function mudarModo(modo) {
   modoAtual = modo;
   const textos = MODOS[modo];
@@ -123,7 +130,7 @@ formLogin.addEventListener("submit", async function (evento) {
     if (modoAtual === "entrar") {
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
       if (error) throw error;
-      window.location.href = "home.html";
+      window.location.href = destinoDepoisDoLogin();
     }
 
     if (modoAtual === "criar") {
@@ -132,7 +139,7 @@ formLogin.addEventListener("submit", async function (evento) {
         password: senha,
         options: {
           data: { nome: nome },
-          emailRedirectTo: new URL("home.html", window.location.href).href
+          emailRedirectTo: new URL(destinoDepoisDoLogin(), window.location.href).href
         }
       });
       if (error) throw error;
@@ -148,7 +155,7 @@ formLogin.addEventListener("submit", async function (evento) {
 
       if (data.session) {
         // Confirmação de e-mail desligada no Supabase: já entra direto
-        window.location.href = "home.html";
+        window.location.href = destinoDepoisDoLogin();
       } else {
         mudarModo("entrar");
         mostrarMensagem("Conta criada! Enviamos um link de confirmação para " + email + ".", "sucesso");
@@ -176,7 +183,7 @@ async function verificarSessao() {
     return;
   }
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session) window.location.href = "home.html";
+  if (data.session) window.location.replace(destinoDepoisDoLogin());
 }
 
 mudarModo("entrar");

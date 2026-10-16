@@ -3219,3 +3219,8 @@ a.botao-sair {
   background: rgba(139, 92, 246, 0.12);
   color: var(--gamer-texto-2);
 }
+
+/* Páginas que exigem login ficam escondidas até a sessão ser confirmada (js/comum.js) */
+.precisa-login body {
+  visibility: hidden;
+}

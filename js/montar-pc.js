@@ -662,8 +662,12 @@ document.getElementById("limpar-pc").addEventListener("click", function () {
   mostrarPecas();
 });
 
+document.getElementById("botao-sair").addEventListener("click", sairDaConta);
+
 // ===== Início =====
 async function iniciar() {
+  if (!(await exigirLogin())) return; // sem login: já está indo para a tela de entrar
+
   const resultado = await buscarProdutos();
 
   produtosPorSlug = new Map();

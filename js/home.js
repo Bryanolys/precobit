@@ -20,32 +20,18 @@ const OUTRAS_LOJAS = [
 ];
 
 // ===== Sessão =====
-// Qualquer pessoa pode ver os preços; a conta só é necessária para favoritos e cadastro.
+// A página só abre com login (exigirLogin, em js/comum.js)
 async function carregarUsuario() {
-  if (SUPABASE_CONFIGURADO) {
-    const { data } = await supabaseClient.auth.getSession();
-    usuario = data.session ? data.session.user : null;
-  }
+  usuario = await exigirLogin();
+  if (!usuario) return false;
 
-  // Topo e menu mudam conforme a pessoa está logada ou não
-  document.querySelectorAll(".so-logado").forEach((el) => (el.hidden = !usuario));
-  document.querySelectorAll(".so-visitante").forEach((el) => (el.hidden = Boolean(usuario)));
+  document.querySelectorAll(".so-logado").forEach((el) => (el.hidden = false));
+  document.querySelectorAll(".so-visitante").forEach((el) => (el.hidden = true));
+  return true;
 }
 
-async function sair() {
-  await supabaseClient.auth.signOut();
-  window.location.reload();
-}
-
-document.getElementById("botao-sair").addEventListener("click", sair);
-document.getElementById("menu-sair").addEventListener("click", sair);
-
-// Se a pessoa sair em outra aba, a página volta ao modo visitante
-if (SUPABASE_CONFIGURADO) {
-  supabaseClient.auth.onAuthStateChange(function (evento) {
-    if (evento === "SIGNED_OUT" && usuario) window.location.reload();
-  });
-}
+document.getElementById("botao-sair").addEventListener("click", sairDaConta);
+document.getElementById("menu-sair").addEventListener("click", sairDaConta);
 
 // ===== Produtos =====
 
@@ -458,12 +444,13 @@ formCadastro.addEventListener("submit", async function (evento) {
 async function iniciar() {
   listaProdutos.innerHTML = '<p class="vazio">Carregando produtos...</p>';
 
-  await carregarUsuario();
-  await Promise.all([usuario ? carregarCadastro() : null, carregarProdutos(), carregarResumoHistorico()]);
-  if (usuario) await carregarFavoritos();
+  if (!(await carregarUsuario())) return; // sem login: já está indo para a tela de entrar
 
-  // O filtro de favoritos só aparece para quem está logado (e com os produtos do banco)
-  document.getElementById("opcao-favoritos").hidden = !(dadosDoBanco && usuario);
+  await Promise.all([carregarCadastro(), carregarProdutos(), carregarResumoHistorico()]);
+  await carregarFavoritos();
+
+  // Favoritos só aparecem no filtro quando os produtos vêm do banco
+  document.getElementById("opcao-favoritos").hidden = !dadosDoBanco;
 
   montarCategorias();
   mostrarProdutos();

@@ -11,6 +11,39 @@ const IMAGENS_CATEGORIA = {
   "Fontes": "../img/categorias/fontes.svg"
 };
 
+// ===== Login obrigatório =====
+// As páginas do site só abrem para quem está logado. Sem sessão, vai para o login
+// levando junto a página atual (?voltar=...), para voltar a ela depois de entrar.
+// Devolve o usuário logado (ou null enquanto o navegador já está indo para o login).
+async function exigirLogin() {
+  let sessao = null;
+  if (SUPABASE_CONFIGURADO) {
+    const { data } = await supabaseClient.auth.getSession();
+    sessao = data.session;
+  }
+
+  if (!sessao) {
+    const pagina = window.location.pathname.split("/").pop() + window.location.search;
+    window.location.replace("entrar.html?voltar=" + encodeURIComponent(pagina));
+    return null;
+  }
+
+  // Sessão confirmada: libera a página (ela fica escondida até aqui, sem piscar o conteúdo)
+  document.documentElement.classList.remove("precisa-login");
+
+  // Se a pessoa sair em outra aba, esta também volta para o login
+  supabaseClient.auth.onAuthStateChange(function (evento) {
+    if (evento === "SIGNED_OUT") window.location.replace("entrar.html");
+  });
+
+  return sessao.user;
+}
+
+async function sairDaConta() {
+  await supabaseClient.auth.signOut();
+  window.location.replace("entrar.html");
+}
+
 // Formata número como dinheiro: 1234.5 -> "R$ 1.234,50"
 function formatarPreco(valor) {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
