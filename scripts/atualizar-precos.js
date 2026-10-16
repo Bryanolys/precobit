@@ -167,13 +167,27 @@ async function listarKabum(url) {
   return json ? acharListaKabum(JSON.parse(json[1])) || [] : [];
 }
 
+// Preço do produto na KaBuM. Quando ele está numa campanha ("OFERTAS KABUM"), o preço
+// de verdade fica em p.offer; os campos de fora continuam com o preço antigo (bem mais alto).
+function precoKabum(p) {
+  const agora = Date.now() / 1000;
+  const o = p.offer;
+  const ofertaValendo = o && o.priceWithDiscount > 0 &&
+    (!o.startsAt || o.startsAt <= agora) && (!o.endsAt || agora < o.endsAt) &&
+    (o.quantityAvailable == null || o.quantityAvailable > 0);
+
+  if (ofertaValendo) return { preco: o.priceWithDiscount, precoNormal: o.price || null };
+  return { preco: p.priceWithDiscount || p.price, precoNormal: p.price };
+}
+
 function kabumParaOferta(p) {
+  const { preco, precoNormal } = precoKabum(p);
   return {
     loja: "KaBuM!",
     codigo: p.code,
     titulo: p.name,
-    preco: p.priceWithDiscount || p.price,
-    precoNormal: p.price,
+    preco: preco,
+    precoNormal: precoNormal,
     link: "https://www.kabum.com.br/produto/" + p.code + "/" + p.friendlyName,
     foto: p.image
   };
@@ -205,7 +219,7 @@ const MAIS_PROCURADOS_POR_CATEGORIA = 10;
 
 // Produto da KaBuM serve? (vendido pela própria KaBuM, disponível, sem kit/combo/notebook...)
 function kabumServe(p, categoriaKabum) {
-  const preco = p.priceWithDiscount || p.price;
+  const preco = precoKabum(p).preco;
   if (!p.available || p.sellerName !== "KaBuM!" || !preco || preco < categoriaKabum.minimo) return false;
   if (EXCLUIR_SEMPRE.test(p.name)) return false;
   if (categoriaKabum.categoria !== "Memória RAM" && EXCLUIR_KIT.test(p.name)) return false;
@@ -412,8 +426,7 @@ async function principal() {
 
     // Mesmo modelo de um produto da lista fixa (outro anúncio do mesmo item)?
     // Não duplica: só passa o ranking para o produto da lista fixa.
-    const precoKabum = item.p.priceWithDiscount || item.p.price;
-    const igual = PRODUTOS.find((pf) => pf.categoria === item.categoria && anuncioServe(item.p.name, precoKabum, pf));
+    const igual = PRODUTOS.find((pf) => pf.categoria === item.categoria && anuncioServe(item.p.name, precoKabum(item.p).preco, pf));
     if (igual) {
       const salvo = resultadoDaListaFixa.get(igual);
       if (salvo && (salvo.popularidade === null || item.popularidade < salvo.popularidade)) {
@@ -519,22 +532,9 @@ async function enviarParaSupabase(produtos, atualizadoEm) {
     ...(comRanking ? { popularidade: p.popularidade ?? null, selo: p.selo ?? null } : {})
   })));
 
-  // Produtos que saíram da lista (ex.: deixaram de ser mais procurados) saem do banco,
-  // para o site não mostrar preço velho. Só faz isso se a busca de hoje veio completa.
-  const slugsNovos = new Set(produtos.map((p) => p.slug));
-  const noBanco = (await chamarSupabase("GET", "produtos?select=slug")) || [];
-  const sairam = noBanco.map((p) => p.slug).filter((slug) => !slugsNovos.has(slug));
-  if (sairam.length > 0 && produtos.length >= noBanco.length * 0.7) {
-    await chamarSupabase("DELETE", "produtos?slug=in.(" + sairam.join(",") + ")");
-    console.log(sairam.length + " produto(s) que saíram da lista foram removidos do banco.");
-  } else if (sairam.length > 0) {
-    console.log("A busca de hoje veio bem menor que o normal; não removi nenhum produto antigo por segurança.");
-  }
-
-  // 2) Ofertas: apaga as antigas desses produtos e grava as novas
-  const slugs = produtos.map((p) => p.slug);
-  await chamarSupabase("DELETE", "ofertas?produto_slug=in.(" + slugs.join(",") + ")");
-  await chamarSupabase("POST", "ofertas", produtos.flatMap((p) => p.ofertas.map((o) => ({
+  // 2) Ofertas: grava as novas por cima das antigas (mesmo produto + loja = atualiza).
+  // Primeiro grava, depois limpa: se algo falhar no meio, o site continua com preço.
+  await chamarSupabase("POST", "ofertas?on_conflict=produto_slug,loja", produtos.flatMap((p) => p.ofertas.map((o) => ({
     produto_slug: p.slug,
     loja: o.loja,
     titulo: o.titulo,
@@ -543,6 +543,40 @@ async function enviarParaSupabase(produtos, atualizadoEm) {
     link: o.link,
     atualizado_em: atualizadoEm
   }))));
+
+  // Ofertas de uma loja que não tem mais o produto saem do banco
+  const lojasNovas = new Set(produtos.flatMap((p) => p.ofertas.map((o) => p.slug + "|" + o.loja)));
+  const slugsNovos = new Set(produtos.map((p) => p.slug));
+  const ofertasNoBanco = (await chamarSupabase("GET", "ofertas?select=id,produto_slug,loja")) || [];
+  const ofertasVelhas = ofertasNoBanco
+    .filter((o) => slugsNovos.has(o.produto_slug) && !lojasNovas.has(o.produto_slug + "|" + o.loja))
+    .map((o) => o.id);
+  if (ofertasVelhas.length > 0) {
+    await chamarSupabase("DELETE", "ofertas?id=in.(" + ofertasVelhas.join(",") + ")");
+  }
+
+  // 3) Produtos que saíram da lista (ex.: deixaram de ser mais procurados).
+  // Só mexe neles se a busca de hoje veio completa.
+  const noBanco = (await chamarSupabase("GET", "produtos?select=slug")) || [];
+  const sairam = noBanco.map((p) => p.slug).filter((slug) => !slugsNovos.has(slug));
+  if (sairam.length > 0 && produtos.length >= noBanco.length * 0.7) {
+    // Quem está nos favoritos de alguém não é apagado (apagar levaria o favorito junto):
+    // só perde as ofertas, então some do site e volta com favorito e tudo se entrar na lista de novo.
+    const favoritados = new Set(((await chamarSupabase("GET", "favoritos?select=produto_slug")) || []).map((f) => f.produto_slug));
+    const guardar = sairam.filter((slug) => favoritados.has(slug));
+    const apagar = sairam.filter((slug) => !favoritados.has(slug));
+
+    if (guardar.length > 0) {
+      await chamarSupabase("DELETE", "ofertas?produto_slug=in.(" + guardar.join(",") + ")");
+    }
+    if (apagar.length > 0) {
+      await chamarSupabase("DELETE", "produtos?slug=in.(" + apagar.join(",") + ")");
+    }
+    console.log(sairam.length + " produto(s) saíram da lista: " + apagar.length + " removido(s), " +
+      guardar.length + " guardado(s) porque estão nos favoritos de alguém.");
+  } else if (sairam.length > 0) {
+    console.log("A busca de hoje veio bem menor que o normal; não mexi nos produtos antigos por segurança.");
+  }
 
   console.log("Supabase atualizado!");
 }
