@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b2a6f">
   <title>Monte seu PC - PreçoBit</title>
+  <meta name="description" content="Escolha as peças, veja o preço total, se tudo combina e quantos FPS o PC roda em Valorant, CS2, Fortnite, GTA V e Cyberpunk.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PreçoBit">
+  <meta property="og:title" content="Monte seu PC - PreçoBit">
+  <meta property="og:description" content="Veja o preço de hoje, se as peças combinam e quantos FPS o PC roda.">
+  <meta property="og:url" content="https://joyful-capybara-d345ff.netlify.app/pages/montar-pc.html">
+  <meta property="og:image" content="https://joyful-capybara-d345ff.netlify.app/img/compartilhar.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="pagina-home">
@@ -27,10 +37,16 @@
 
   <section class="hero hero-baixo">
     <h1>Monte seu <span>PC</span></h1>
-    <p>Escolha uma peça de cada tipo. A gente soma o menor preço e confere se tudo combina.</p>
+    <p>Comece por um PC pronto ou escolha peça por peça. A gente soma o menor preço, confere se tudo combina e mostra quantos FPS roda.</p>
   </section>
 
   <main class="conteudo montador">
+
+    <!-- PCs prontos: um clique carrega as peças com o preço de hoje -->
+    <section class="secao-prontos" aria-labelledby="titulo-prontos">
+      <h2 id="titulo-prontos" class="titulo-secao">PCs prontos com o preço de hoje</h2>
+      <div id="pcs-prontos" class="pcs-prontos"></div>
+    </section>
 
     <!-- Uma linha para cada tipo de peça (preenchida pelo JavaScript) -->
     <section id="lista-pecas" class="lista-pecas" aria-label="Peças do PC">
@@ -54,11 +70,16 @@
         </div>
       </div>
 
+      <h2 class="titulo-checagem">Quantos FPS roda?</h2>
+      <div id="desempenho-pc" class="desempenho"></div>
+
       <h2 class="titulo-checagem">Compatibilidade</h2>
       <ul id="checagens" class="checagens"></ul>
 
       <div class="acoes-pc">
-        <button type="button" id="copiar-link" class="botao-oferta" disabled>Copiar link da montagem</button>
+        <button type="button" id="compartilhar-pc" class="botao-oferta" disabled>Compartilhar montagem</button>
+        <a id="whatsapp-pc" class="botao-whatsapp" href="#" target="_blank" rel="noopener" hidden>Enviar no WhatsApp</a>
+        <button type="button" id="copiar-link" class="botao-menu-secundario" disabled>Copiar link</button>
         <button type="button" id="limpar-pc" class="botao-menu-secundario" disabled>Limpar tudo</button>
       </div>
       <p id="mensagem-pc" class="menu-mensagem sucesso" aria-live="polite"></p>
@@ -82,6 +103,7 @@
   <script src="../js/supabase-config.js"></script>
   <script src="../js/produtos.js"></script>
   <script src="../js/comum.js"></script>
+  <script src="../js/desempenho.js"></script>
   <script src="../js/montar-pc.js"></script>
 </body>
 </html>

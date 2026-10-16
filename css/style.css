@@ -1527,6 +1527,31 @@ body.menu-aberto {
   }
 }
 
+/* ===== FPS nos cards de placa de vídeo ===== */
+.fps-card {
+  margin: 10px 4px 0;
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(42, 168, 242, 0.12));
+  color: #3b2a7a;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.fps-card span {
+  display: block;
+  font-weight: 400;
+  color: #5a6b85;
+}
+
+@media (max-width: 600px) {
+  .produto .fps-card {
+    grid-column: 1 / -1;
+    margin: 10px 0 0;
+  }
+}
+
 /* ===== Visitante (sem conta) ===== */
 .convite-conta {
   display: flex;
@@ -1973,6 +1998,170 @@ a.botao-sair {
   margin-bottom: 4px;
   color: #9b1c2e;
   font-weight: 600;
+}
+
+/* PCs prontos */
+.secao-prontos {
+  grid-column: 1 / -1;
+}
+
+.titulo-secao {
+  margin: 0 4px 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.pcs-prontos {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pc-pronto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 24px rgba(21, 101, 216, 0.08);
+  color: inherit;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+@media (hover: hover) {
+  .pc-pronto:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(21, 101, 216, 0.18);
+  }
+}
+
+.pronto-nome {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.pronto-jogos {
+  font-size: 12px;
+  color: #5a6b85;
+}
+
+.pronto-pecas {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #24406b;
+}
+
+.pronto-fps {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #7c3aed, #2aa8f2);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pronto-preco {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1565d8;
+}
+
+/* Quantos FPS roda? */
+.desempenho-vazio,
+.desempenho-nota {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #5a6b85;
+}
+
+.desempenho-nota {
+  margin-top: 6px;
+}
+
+.tabela-fps {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tabela-fps th,
+.tabela-fps td {
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(21, 101, 216, 0.1);
+  text-align: left;
+  font-weight: 400;
+}
+
+.tabela-fps thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #5a6b85;
+}
+
+.tabela-fps td:last-child,
+.tabela-fps th:last-child {
+  text-align: right;
+}
+
+.tabela-fps tbody th {
+  font-weight: 500;
+}
+
+.nivel {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  vertical-align: 1px;
+}
+
+.nivel-top   { background: rgba(124, 58, 237, 0.12); color: #5b21b6; }
+.nivel-bom   { background: rgba(26, 127, 69, 0.12);  color: #14603a; }
+.nivel-ok    { background: rgba(214, 140, 0, 0.14);  color: #7a5000; }
+.nivel-fraco { background: rgba(200, 40, 60, 0.12);  color: #9b1c2e; }
+
+.botao-whatsapp {
+  display: block;
+  padding: 10px;
+  border-radius: 12px;
+  background: #1fa855;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.botao-whatsapp:hover {
+  filter: brightness(1.08);
+}
+
+@media (max-width: 1100px) {
+  .pcs-prontos {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 6px;
+  }
+
+  .pc-pronto {
+    flex: 0 0 210px;
+    scroll-snap-align: start;
+  }
 }
 
 @media (max-width: 860px) {

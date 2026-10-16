@@ -217,6 +217,12 @@ function mostrarProdutos() {
     if (ordem === "menor") return a.melhor.preco - b.melhor.preco;
     if (ordem === "maior") return b.melhor.preco - a.melhor.preco;
     if (ordem === "economia") return b.economia - a.economia;
+    if (ordem === "custo-fps") {
+      // Placas de vídeo primeiro, da que entrega mais FPS por real; o resto por menor preço
+      const ca = custoPorFps(a) ?? Infinity;
+      const cb = custoPorFps(b) ?? Infinity;
+      return ca !== cb ? ca - cb : a.melhor.preco - b.melhor.preco;
+    }
     if (ordem === "populares") {
       // Quem está no ranking vem primeiro (número menor = mais popular); o resto por menor preço
       const pa = a.popularidade ?? Infinity;
@@ -237,6 +243,34 @@ function mostrarProdutos() {
   }
 
   listaProdutos.innerHTML = resultado.map(criarCard).join("");
+}
+
+// ===== Desempenho das placas de vídeo (js/desempenho.js) =====
+
+// FPS estimados da placa (1080p, com um processador à altura), ou null se não for placa conhecida
+function fpsDaPlaca(produto) {
+  if (produto.categoria !== "Placas de vídeo") return null;
+  const chip = chipDaPlaca(produto.nome);
+  return chip ? estimarFps(chip.indice) : null;
+}
+
+// Reais por FPS no Cyberpunk 2077 (o jogo mais pesado da lista): quanto menor, melhor
+function custoPorFps(produto) {
+  const fps = fpsDaPlaca(produto);
+  if (!fps) return null;
+  const cyberpunk = fps.find((j) => j.jogo === "Cyberpunk 2077").fps1080;
+  return produto.melhor.preco / cyberpunk;
+}
+
+function linhaFps(produto) {
+  const fps = fpsDaPlaca(produto);
+  if (!fps) return "";
+  const pegar = (nome) => fps.find((j) => j.jogo === nome).fps1080;
+  return `
+      <p class="fps-card" title="Estimativa em 1080p, gráficos no alto, com um processador à altura">
+        🎮 ~${pegar("Fortnite")} FPS no Fortnite · ~${pegar("Cyberpunk 2077")} no Cyberpunk
+        <span>${formatarPreco(custoPorFps(produto))} por FPS</span>
+      </p>`;
 }
 
 // Monta o HTML de um card de produto
@@ -292,6 +326,8 @@ function criarCard(produto) {
       <p class="preco">${formatarPreco(produto.melhor.preco)}</p>
       <p class="na-loja">na <strong>${escapar(produto.melhor.loja)}</strong> ${produto.melhor.precoNormal ? "(no PIX)" : ""}</p>
       ${selo}
+
+      ${linhaFps(produto)}
 
       <a class="botao-oferta" href="${escapar(produto.melhor.link)}" target="_blank" rel="noopener">Ver oferta ↗</a>
 

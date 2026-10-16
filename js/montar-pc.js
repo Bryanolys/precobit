@@ -35,45 +35,10 @@ const CHIPSETS = {
   "LGA 1851": ["H810", "B860", "Z890"]
 };
 
-// Consumo máximo aproximado dos processadores (watts)
-const CONSUMO_PROCESSADOR = [
-  [/9950X3D/i, 230],
-  [/9900X/i, 162],
-  [/[79]800X3D/i, 162],
-  [/9600X/i, 88],
-  [/5900XT/i, 142],
-  [/5800X3D/i, 142],
-  [/5700X|5700G|5600|5500/i, 88],
-  [/Ultra\s*7\s*265K/i, 250],
-  [/14400/i, 148],
-  [/12400/i, 117]
-];
-
-// Consumo das placas de vídeo (watts, segundo os fabricantes)
-const CONSUMO_PLACA_VIDEO = [
-  [/RTX\s?5090/i, 575],
-  [/RTX\s?5080/i, 360],
-  [/RTX\s?5070\s?Ti/i, 300],
-  [/RTX\s?5070/i, 250],
-  [/RTX\s?5060\s?Ti/i, 180],
-  [/RTX\s?5060/i, 145],
-  [/RTX\s?5050/i, 130],
-  [/RTX\s?3050.*6\s?GB/i, 70],
-  [/RTX\s?3050/i, 130],
-  [/RX\s?9070\s?XT/i, 304],
-  [/RX\s?9070/i, 220],
-  [/RX\s?9060\s?XT/i, 160],
-  [/RX\s?7600/i, 165],
-  [/RX\s?580/i, 185]
-];
+// Consumo e força em jogos de processadores e placas de vídeo ficam em js/desempenho.js
 
 // Placa-mãe, memória, SSD e ventoinhas juntos
 const CONSUMO_RESTO = 60;
-
-function buscarNaTabela(tabela, texto, padrao) {
-  const linha = tabela.find(([regra]) => regra.test(texto));
-  return linha ? linha[1] : padrao;
-}
 
 // Nome + títulos dos anúncios: os títulos costumam trazer mais detalhes
 function textoCompleto(produto) {
@@ -109,10 +74,14 @@ function specsProcessador(produto) {
   if (ryzen) videoIntegrado = soquete === "AM5" || /\d{4}G\b/i.test(nome);
   else videoIntegrado = !/\d+K?F\b/i.test(nome);
 
+  const dados = dadosDoProcessador(nome);
   return {
     soquete: soquete,
     videoIntegrado: videoIntegrado,
-    watts: buscarNaTabela(CONSUMO_PROCESSADOR, nome, 120),
+    watts: dados ? dados.watts : 120,
+    indice: dados ? dados.indice : null,
+    // Força do vídeo integrado em jogos (usada quando não tem placa de vídeo)
+    indiceVideo: videoIntegrado ? (dados && dados.videoIntegrado) || 7 : 0,
     // Memória que o soquete aceita (LGA 1700 aceita as duas, depende da placa)
     ddr: soquete === "AM4" ? "DDR4" : soquete === "AM5" || soquete === "LGA 1851" ? "DDR5" : null
   };
@@ -131,12 +100,27 @@ function specsPlacaMae(produto) {
   return { chipset: chipset, soquete: soquete, ddr: ddr };
 }
 
+// Primeiro número com GB/TB no nome, em GB: "16GB (2x8)" -> 16, "SSD 1TB" -> 1000
+function capacidadeEmGB(nome) {
+  const m = nome.match(/(\d+)\s?(GB|TB)\b/i);
+  if (!m) return null;
+  return Number(m[1]) * (m[2].toUpperCase() === "TB" ? 1000 : 1);
+}
+
 function specsMemoria(produto) {
-  return { ddr: ddrNoTexto(produto.nome) || ddrNoTexto(textoCompleto(produto)) };
+  return {
+    ddr: ddrNoTexto(produto.nome) || ddrNoTexto(textoCompleto(produto)),
+    gb: capacidadeEmGB(produto.nome)
+  };
 }
 
 function specsPlacaVideo(produto) {
-  return { watts: buscarNaTabela(CONSUMO_PLACA_VIDEO, produto.nome, 200) };
+  const chip = chipDaPlaca(produto.nome);
+  return {
+    chip: chip ? chip.chip : null,
+    watts: chip ? chip.watts : 200,
+    indice: chip ? chip.indice : null
+  };
 }
 
 function specsFonte(produto) {
@@ -146,7 +130,10 @@ function specsFonte(produto) {
 }
 
 function specsArmazenamento(produto) {
-  return { externo: /\bUSB\b|portátil/i.test(textoCompleto(produto)) };
+  return {
+    externo: /\bUSB\b|portátil/i.test(textoCompleto(produto)),
+    gb: capacidadeEmGB(produto.nome)
+  };
 }
 
 const LER_SPECS = {
@@ -253,6 +240,195 @@ function problemasDaOpcao(categoria, produto) {
   return verificar(hipotese).filter((i) => (i.tipo === "erro" || i.tipo === "aviso") && i.pecas.includes(categoria) && !i.faltaPeca);
 }
 
+// ===== Desempenho em jogos =====
+
+// FPS estimado da montagem (null se ainda não dá para calcular)
+function desempenhoDaMontagem(pecas) {
+  const cpu = pecas["Processadores"];
+  const gpu = pecas["Placas de vídeo"];
+  if (!cpu && !gpu) return null;
+
+  if (gpu) {
+    if (!gpu.specs.indice) return { semDados: true };
+    return {
+      fps: estimarFps(gpu.specs.indice, cpu && cpu.specs.indice),
+      fonte: gpu.specs.chip,
+      semProcessador: !cpu
+    };
+  }
+
+  // Sem placa de vídeo: usa o vídeo integrado do processador (se tiver)
+  if (!cpu.specs.indiceVideo) return null;
+  return { fps: estimarFps(cpu.specs.indiceVideo, cpu.specs.indice), fonte: "vídeo integrado", integrado: true };
+}
+
+function mostrarDesempenho() {
+  const caixa = document.getElementById("desempenho-pc");
+  const d = desempenhoDaMontagem(escolhas);
+
+  if (!d) {
+    caixa.innerHTML = '<p class="desempenho-vazio">Escolha o processador e a placa de vídeo para ver quantos FPS o PC roda.</p>';
+    return;
+  }
+  if (d.semDados) {
+    caixa.innerHTML = '<p class="desempenho-vazio">Ainda não temos dados de desempenho dessa placa de vídeo.</p>';
+    return;
+  }
+
+  const linhas = d.fps.map((j) => `
+    <tr>
+      <th scope="row">${j.jogo}</th>
+      <td><strong>${j.fps1080}</strong> <span class="nivel ${j.nivel.classe}">${j.nivel.texto}</span></td>
+      <td>${j.fps1440}</td>
+    </tr>`).join("");
+
+  const notas = [];
+  if (d.integrado) notas.push("Sem placa de vídeo: usando o vídeo do processador.");
+  if (d.semProcessador) notas.push("Considerando um processador à altura da placa.");
+
+  caixa.innerHTML = `
+    <table class="tabela-fps">
+      <thead><tr><th scope="col">Jogo</th><th scope="col">1080p</th><th scope="col">1440p</th></tr></thead>
+      <tbody>${linhas}</tbody>
+    </table>
+    <p class="desempenho-nota">${notas.concat("FPS médio estimado, gráficos no alto, sem ray tracing.").join(" ")}</p>`;
+}
+
+// ===== PCs prontos =====
+// Cada PC pronto diz o que procura; as outras peças são escolhidas sozinhas:
+// a placa-mãe, a memória e a fonte compatíveis mais baratas do dia.
+// maisBarato: true = testa todos os processadores/placas da lista e fica com o PC de menor total;
+// sem isso, vale a ordem da lista (a primeira peça que existir).
+const PCS_PRONTOS = [
+  { id: "estudo", nome: "PC para estudo e trabalho", jogos: "Navegar, estudar e jogos leves", maisBarato: true,
+    processadores: [/5700G/i, /8500G/i, /i3-12100(?!F)/i, /i5-12400(?!F)/i], placas: [], ramGB: 16, ssdGB: 480 },
+  { id: "entrada", nome: "PC gamer de entrada", jogos: "Valorant, CS2 e Fortnite", maisBarato: true,
+    processadores: [/Ryzen 5 5500/i, /Ryzen 5 5600\b/i, /i3-12100/i], placas: [/RTX\s?3050/i, /RX\s?7600/i, /RTX\s?3060/i], ramGB: 16, ssdGB: 480 },
+  { id: "1080p", nome: "PC gamer 1080p", jogos: "Jogos atuais em 1080p no alto",
+    processadores: [/Ryzen 5 5600\b/i, /Ryzen 7 5700X\b/i, /12400F/i], placas: [/RTX\s?5060(?!\s?Ti)/i, /RX\s?7600/i, /RTX\s?5060\s?Ti/i], ramGB: 16, ssdGB: 1000 },
+  { id: "1440p", nome: "PC gamer 1440p", jogos: "Jogos pesados em 1440p",
+    processadores: [/7800X3D/i, /9600X/i, /5800X3D/i], placas: [/RTX\s?5070(?!\s?Ti)/i, /RX\s?9070/i], ramGB: 32, ssdGB: 1000 },
+  { id: "topo", nome: "PC topo de linha", jogos: "Tudo no máximo e stream",
+    processadores: [/9800X3D/i, /7800X3D/i], placas: [/RX\s?9070\s?XT/i, /RTX\s?5070/i], ramGB: 32, ssdGB: 2000 }
+];
+
+// Fontes com selo de eficiência (80 Plus / Cybenetics) são preferidas
+const FONTE_CERTIFICADA = /80\s?plus|cybenetics|bronze|gold|platinum/i;
+
+function maisBarato(lista) {
+  return lista.sort((a, b) => a.melhor.preco - b.melhor.preco)[0] || null;
+}
+
+function produtosDa(categoria) {
+  return [...produtosPorSlug.values()].filter((p) => p.categoria === categoria);
+}
+
+// Primeira regra da lista que encontra algum produto (o mais barato dela)
+function primeiroQueExiste(categoria, regras) {
+  for (const regra of regras) {
+    const achado = maisBarato(produtosDa(categoria).filter((p) => regra.test(p.nome)));
+    if (achado) return achado;
+  }
+  return null;
+}
+
+function totalDas(pecas) {
+  return Object.values(pecas).reduce((soma, p) => soma + p.melhor.preco, 0);
+}
+
+// Monta as peças de um PC pronto (null se faltar alguma peça essencial)
+function montarPcPronto(pronto) {
+  if (!pronto.maisBarato) {
+    const cpu = primeiroQueExiste("Processadores", pronto.processadores);
+    const gpu = pronto.placas.length ? primeiroQueExiste("Placas de vídeo", pronto.placas) : null;
+    return montarComPecas(pronto, cpu, gpu);
+  }
+
+  // Testa cada processador x cada placa de vídeo da lista e fica com o PC mais barato
+  const cpus = pronto.processadores.map((r) => primeiroQueExiste("Processadores", [r])).filter(Boolean);
+  const gpus = pronto.placas.length
+    ? pronto.placas.map((r) => primeiroQueExiste("Placas de vídeo", [r])).filter(Boolean)
+    : [null];
+  let melhor = null;
+  for (const cpu of cpus) {
+    for (const gpu of gpus) {
+      const pecas = montarComPecas(pronto, cpu, gpu);
+      if (pecas && (!melhor || totalDas(pecas) < totalDas(melhor))) melhor = pecas;
+    }
+  }
+  return melhor;
+}
+
+// Completa o PC com a placa-mãe, a memória, o SSD e a fonte compatíveis mais baratos
+function montarComPecas(pronto, cpu, gpu) {
+  if (!cpu) return null;
+  if (pronto.placas.length && !gpu) return null;
+
+  const placa = maisBarato(produtosDa("Placas-mãe").filter((p) =>
+    p.specs.soquete === cpu.specs.soquete && (!cpu.specs.ddr || p.specs.ddr === cpu.specs.ddr)));
+  if (!placa) return null;
+
+  const memorias = produtosDa("Memória RAM").filter((p) => p.specs.ddr === placa.specs.ddr);
+  const ram = maisBarato(memorias.filter((p) => p.specs.gb === pronto.ramGB)) ||
+              maisBarato(memorias.filter((p) => p.specs.gb > pronto.ramGB));
+
+  const disco = maisBarato(produtosDa("Armazenamento").filter((p) => !p.specs.externo && p.specs.gb >= pronto.ssdGB)) ||
+                maisBarato(produtosDa("Armazenamento").filter((p) => !p.specs.externo));
+
+  const pecas = { "Processadores": cpu, "Placas-mãe": placa };
+  if (ram) pecas["Memória RAM"] = ram;
+  if (gpu) pecas["Placas de vídeo"] = gpu;
+  if (disco) pecas["Armazenamento"] = disco;
+
+  const consumo = calcularConsumo(pecas);
+  const fontes = produtosDa("Fontes").filter((p) => p.specs.potencia >= consumo.recomendada);
+  const fonte = maisBarato(fontes.filter((p) => FONTE_CERTIFICADA.test(p.nome))) || maisBarato(fontes);
+  if (fonte) pecas["Fontes"] = fonte;
+
+  return pecas;
+}
+
+function mostrarPcsProntos() {
+  const lista = document.getElementById("pcs-prontos");
+
+  lista.innerHTML = PCS_PRONTOS.map(function (pronto) {
+    const pecas = montarPcPronto(pronto);
+    if (!pecas) return "";
+
+    const total = totalDas(pecas);
+    const d = desempenhoDaMontagem(pecas);
+    // Destaque: FPS no Fortnite (o jogo mais conhecido da lista)
+    const fortnite = d && d.fps ? d.fps.find((j) => j.jogo === "Fortnite") : null;
+    const destaque = fortnite && pecas["Placas de vídeo"] ? `<span class="pronto-fps">~${fortnite.fps1080} FPS no Fortnite</span>` : "";
+    const resumo = [pecas["Processadores"], pecas["Placas de vídeo"]].filter(Boolean)
+      .map((p) => escapar(p.specs.chip || p.nome.replace(/^Processador\s+/i, ""))).join(" + ");
+
+    return `
+      <button type="button" class="pc-pronto" data-pronto="${pronto.id}">
+        <span class="pronto-nome">${pronto.nome}</span>
+        <span class="pronto-jogos">${pronto.jogos}</span>
+        <span class="pronto-pecas">${resumo}</span>
+        ${destaque}
+        <span class="pronto-preco">${formatarPreco(total)}</span>
+      </button>`;
+  }).join("");
+}
+
+function usarPcPronto(id, rolar) {
+  const pronto = PCS_PRONTOS.find((p) => p.id === id);
+  const pecas = pronto && montarPcPronto(pronto);
+  if (!pecas) return;
+  escolhas = pecas;
+  salvarMontagem();
+  mostrarPecas();
+  if (rolar) document.getElementById("lista-pecas").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.getElementById("pcs-prontos").addEventListener("click", function (evento) {
+  const botao = evento.target.closest(".pc-pronto");
+  if (botao) usarPcPronto(botao.dataset.pronto, true);
+});
+
 // ===== Tela =====
 
 function mostrarPecas() {
@@ -316,6 +492,8 @@ function mostrarResumo(checagens) {
 
   document.getElementById("copiar-link").disabled = escolhidas.length === 0;
   document.getElementById("limpar-pc").disabled = escolhidas.length === 0;
+  mostrarDesempenho();
+  atualizarCompartilhar();
 }
 
 // ===== Janela de escolha =====
@@ -409,6 +587,7 @@ function salvarMontagem() {
   const url = new URL(window.location.href);
   if (slugs.length) url.searchParams.set("pecas", slugs.join(","));
   else url.searchParams.delete("pecas");
+  url.searchParams.delete("pronto"); // depois de mexer, vale a montagem do link
   history.replaceState(null, "", url);
 
   try {
@@ -435,14 +614,46 @@ function carregarMontagemSalva() {
   }
 }
 
-document.getElementById("copiar-link").addEventListener("click", async function () {
+async function copiarLink() {
   try {
     await navigator.clipboard.writeText(window.location.href);
     mensagemPc.textContent = "Link copiado! É só colar e enviar.";
   } catch (erro) {
     window.prompt("Copie o link da montagem:", window.location.href);
   }
+}
+
+// Texto que vai junto com o link: "Montei um PC no PreçoBit por R$ 4.500 (~140 FPS no Fortnite)"
+function textoParaCompartilhar() {
+  const total = Object.values(escolhas).reduce((soma, p) => soma + p.melhor.preco, 0);
+  const d = desempenhoDaMontagem(escolhas);
+  const fortnite = d && d.fps ? d.fps.find((j) => j.jogo === "Fortnite") : null;
+  return "Montei um PC no PreçoBit por " + formatarPreco(total) +
+    (fortnite ? " (~" + fortnite.fps1080 + " FPS no Fortnite)" : "") + ". Olha as peças:";
+}
+
+function atualizarCompartilhar() {
+  const temPecas = Object.keys(escolhas).length > 0;
+  const whatsapp = document.getElementById("whatsapp-pc");
+  whatsapp.hidden = !temPecas;
+  whatsapp.href = "https://wa.me/?text=" + encodeURIComponent(textoParaCompartilhar() + " " + window.location.href);
+  document.getElementById("compartilhar-pc").disabled = !temPecas;
+}
+
+// No celular abre o menu de compartilhar do sistema; no computador copia o link
+document.getElementById("compartilhar-pc").addEventListener("click", async function () {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "Meu PC no PreçoBit", text: textoParaCompartilhar(), url: window.location.href });
+    } catch (erro) {
+      // a pessoa fechou o menu de compartilhar: nada a fazer
+    }
+    return;
+  }
+  copiarLink();
 });
+
+document.getElementById("copiar-link").addEventListener("click", copiarLink);
 
 document.getElementById("limpar-pc").addEventListener("click", function () {
   escolhas = {};
@@ -466,8 +677,16 @@ async function iniciar() {
   const data = new Date(resultado.atualizadoEm).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
   document.getElementById("atualizado-em").textContent = data;
 
-  carregarMontagemSalva();
-  mostrarPecas();
+  mostrarPcsProntos();
+
+  // Link de um PC pronto (?pronto=1080p) abre com as peças do dia
+  const pronto = new URL(window.location.href).searchParams.get("pronto");
+  if (pronto && PCS_PRONTOS.some((p) => p.id === pronto)) {
+    usarPcPronto(pronto);
+  } else {
+    carregarMontagemSalva();
+    mostrarPecas();
+  }
 }
 
 iniciar();
