@@ -2985,31 +2985,131 @@ a.botao-sair {
   color: #1565d8;
 }
 
-/* ---------- Celular e tablet: formulário primeiro ---------- */
+/* Textos curto/longo das vantagens */
+.acesso-vantagens em {
+  font-style: normal;
+}
+
+.acesso-vantagens .curto {
+  display: none;
+}
+
+/* ---------- Celular e tablet: topo com degradê e formulário por cima ---------- */
 @media (max-width: 860px) {
   .acesso {
-    grid-template-columns: 1fr;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
     min-height: 0;
-    padding: 20px 12px 36px;
+    gap: 0;
+    padding: 0 0 calc(32px + env(safe-area-inset-bottom));
   }
 
-  .painel-acesso {
-    order: -1;
-    padding: 24px 20px;
-  }
-
+  /* A vitrine vira um topo compacto, de ponta a ponta */
   .acesso-vitrine {
-    padding: 28px 22px;
-    border-radius: 22px;
+    padding: 22px 20px 64px;
+    border-radius: 0 0 28px 28px;
+    box-shadow: none;
+  }
+
+  .acesso-etiqueta {
+    padding: 4px 12px;
+    font-size: 12px;
   }
 
   .acesso-titulo {
-    font-size: 30px;
+    margin-top: 14px;
+    font-size: 28px;
   }
 
+  .acesso-texto {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  /* Vantagens em etiquetas lado a lado */
+  .acesso-vantagens {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .acesso-vantagens li {
+    gap: 6px;
+    padding: 5px 12px 5px 6px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .acesso-vantagens li span {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    font-size: 12px;
+  }
+
+  .acesso-vantagens .longo {
+    display: none;
+  }
+
+  .acesso-vantagens .curto {
+    display: inline;
+  }
+
+  /* A prévia grande fica só no computador: no celular o login vem logo */
   .acesso-demo {
-    max-width: none;
+    display: none;
+  }
+
+  /* Formulário sobe por cima do fim do degradê */
+  .painel-acesso {
+    margin: -44px 12px 0;
+    padding: 24px 20px 20px;
+    border-radius: 22px;
+    box-shadow: 0 16px 40px rgba(11, 42, 111, 0.18);
+  }
+
+  .acesso-simples .painel-acesso {
+    margin-top: 20px;
+  }
+
+  .painel-acesso h1 {
+    font-size: 24px;
+  }
+
+  .painel-sub {
+    margin-bottom: 16px;
+  }
+
+  .painel-acesso .botao-entrar {
+    height: 50px;
+  }
+}
+
+/* Celulares bem estreitos */
+@media (max-width: 360px) {
+  .acesso-titulo {
+    font-size: 24px;
+  }
+
+  .acesso-vantagens {
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .painel-acesso {
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 20px 16px 18px;
+  }
+
+  .pagina-acesso .topo-direita .botao-sair:last-child {
+    padding: 0 12px;
   }
 }
 
@@ -3091,4 +3191,15 @@ a.botao-sair {
 
 [data-tema="gamer"] .pagina-acesso .topo.vidro {
   background: rgba(7, 11, 24, 0.85);
+}
+
+/* No celular o formulário fica por cima do degradê: fundo mais sólido para ler bem */
+@media (max-width: 860px) {
+  .pagina-acesso .painel-acesso {
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  [data-tema="gamer"] .pagina-acesso .painel-acesso {
+    background: rgba(14, 19, 40, 0.95);
+  }
 }
